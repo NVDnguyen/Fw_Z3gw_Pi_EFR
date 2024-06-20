@@ -34,9 +34,10 @@
 #include "sensor_data.h"
 void app_init(void)
 {
-  static alarm_speaker_pin speaker_pin = {.port= gpioPortD, .number = 2};
-  static button_pin btt_pin ={.port= gpioPortB,.number=3};
-  static smoke_adc_pin smoke_pin = {.port = gpioPortA, .number =2};
+  // sensor pin
+  alarm_speaker_pin speaker_pin = {.port= gpioPortD, .number = 2};
+  button_pin btt_pin ={.port= gpioPortB,.number=3};
+  smoke_adc_pin smoke_pin = {.port = gpioPortA, .number =2};
 
   init_read_sensor(&smoke_pin, &btt_pin, &speaker_pin);
 
