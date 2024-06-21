@@ -27,7 +27,7 @@ constexpr const wchar_t kGetPreferredBrightnessRegKey[] =
 constexpr const wchar_t kGetPreferredBrightnessRegValue[] = L"AppsUseLightTheme";
 
 // The number of Win32Window objects that currently exist.
-static int g_active_window_count = 0;
+static int g_alarm_window_count = 0;
 
 using EnableNonClientDpiScaling = BOOL __stdcall(HWND hwnd);
 
@@ -112,11 +112,11 @@ void WindowClassRegistrar::UnregisterWindowClass() {
 }
 
 Win32Window::Win32Window() {
-  ++g_active_window_count;
+  ++g_alarm_window_count;
 }
 
 Win32Window::~Win32Window() {
-  --g_active_window_count;
+  --g_alarm_window_count;
   Destroy();
 }
 
@@ -228,7 +228,7 @@ void Win32Window::Destroy() {
     DestroyWindow(window_handle_);
     window_handle_ = nullptr;
   }
-  if (g_active_window_count == 0) {
+  if (g_alarm_window_count == 0) {
     WindowClassRegistrar::GetInstance()->UnregisterWindowClass();
   }
 }

@@ -332,7 +332,7 @@ class BuildHomeWidgets {
                         width: 10,
                       ),
 
-                      data.active == 1
+                      data.alarm == 1
                           ? const Icon(
                               Icons.online_prediction_outlined,
                               color: Color.fromARGB(255, 75, 153, 77),
@@ -478,7 +478,7 @@ class BuildHomeWidgets {
                         ),
                         const Spacer(),
                         const SizedBox(width: 10),
-                        data.active == 1
+                        data.alarm == 1
                             ? const Icon(
                                 Icons.online_prediction_outlined,
                                 color: Color.fromARGB(255, 75, 153, 77),

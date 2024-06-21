@@ -7,7 +7,7 @@ class Device {
   final double hum;
   final double smoke;
   final double temp;
-  final double active;
+  final double alarm;
   final String systemID;
 
   Device({
@@ -17,7 +17,7 @@ class Device {
     required this.hum,
     required this.smoke,
     required this.temp,
-    required this.active,
+    required this.alarm,
     required this.systemID,
   });
   factory Device.fromJson(
@@ -29,7 +29,7 @@ class Device {
       hum: (json['hum'] as num?)?.toDouble() ?? 0.0,
       smoke: (json['smoke'] as num?)?.toDouble() ?? 0.0,
       temp: (json['temp'] as num?)?.toDouble() ?? 0.0,
-      active: (json['active'] as num?)?.toDouble() ?? 0.0,
+      alarm: (json['alarm'] as num?)?.toDouble() ?? 0.0,
       systemID: systemID,
     );
   }

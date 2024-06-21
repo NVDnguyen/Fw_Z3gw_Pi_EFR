@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:iot_app/models/system_log.dart';
 import 'package:iot_app/models/users.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
@@ -44,7 +42,7 @@ class _NewsScreenState extends State<NewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<List<SystemLog>> listLog = DataFirebase.getStreamLogs(lSystem);
+    // Stream<List<SystemLog>> listLog = DataFirebase.getStreamLogs(lSystem);
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
