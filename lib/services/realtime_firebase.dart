@@ -59,6 +59,29 @@ class DataFirebase {
     }
   }
 
+  // get name of device
+  static Future<String> getNameOfDevice(
+      String idSystem, String idDevice) async {
+    try {
+      DatabaseReference systemRef = FirebaseDatabase.instance
+          .ref()
+          .child('Systems')
+          .child(idSystem)
+          .child('devices')
+          .child(idDevice)
+          .child("name");
+      DataSnapshot snapshot = await systemRef.get();
+      if (snapshot.exists) {
+        return snapshot.value as String;
+      } else {
+        return "";
+      }
+    } catch (e) {
+      print("Error getting device name: ${e.toString()}");
+      return "";
+    }
+  }
+
   // add a system
   static Future<bool> addSystem(String idSystem, String key, Users u) async {
     try {
@@ -134,27 +157,27 @@ class DataFirebase {
   }
 
   // get list log of a system
-  static Future<List<SystemLog>> getListLog(String systemID) async {
-    try {
-      List<SystemLog> logs = [];
-      DatabaseReference logsRef = FirebaseDatabase.instance
-          .ref()
-          .child('Systems')
-          .child(systemID)
-          .child("log");
+  // static Future<List<SystemLog>> getListLog(String systemID) async {
+  //   try {
+  //     List<SystemLog> logs = [];
+  //     DatabaseReference logsRef = FirebaseDatabase.instance
+  //         .ref()
+  //         .child('Systems')
+  //         .child(systemID)
+  //         .child("log");
 
-      DataSnapshot snapshot = await logsRef.get();
-      if (snapshot.exists) {
-        (snapshot.value as Map<dynamic, dynamic>).forEach((key, value) {
-          logs.add(SystemLog.fromJson(key, value));
-        });
-      }
-      return logs;
-    } catch (e) {
-      print("Error getting system logs: ${e.toString()}");
-      throw e;
-    }
-  }
+  //     DataSnapshot snapshot = await logsRef.get();
+  //     if (snapshot.exists) {
+  //       (snapshot.value as Map<dynamic, dynamic>).forEach((key, value) {
+  //         logs.add(SystemLog.fromJson(key, value));
+  //       });
+  //     }
+  //     return logs;
+  //   } catch (e) {
+  //     print("Error getting system logs: ${e.toString()}");
+  //     throw e;
+  //   }
+  // }
 
   // stream device
   static Stream<Device> getStreamDevice(Device d) {
@@ -219,8 +242,10 @@ class DataFirebase {
         if (event.snapshot.exists) {
           final Map<dynamic, dynamic> data =
               event.snapshot.value as Map<dynamic, dynamic>;
+
           final List<SystemLog> logs = data.entries
-              .map((entry) => SystemLog.fromJson(entry.key, entry.value))
+              .map((entry) =>
+                  SystemLog.fromJson(entry.key, idSystem, entry.value))
               .toList();
 
           if (!controller.isClosed) {
@@ -263,5 +288,4 @@ class DataFirebase {
       return false;
     }
   }
-  
 }
