@@ -33,6 +33,7 @@ Before getting started, ensure you have the following installed:
 3. **Install dependencies**
 
    ```bash
+   flutter clean
    flutter pub get
    ```
 
@@ -104,7 +105,3 @@ Here are some screenshots illustrating the app:
 ![Edit Profile Screen](assets/screenshot/7.png)
 
 
-```
- keytool -genkey -v -keystore flutter.keystore -alias firewisetech -keyalg RSA -keysize 2048 -validity 10000
- 
-```
