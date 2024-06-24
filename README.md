@@ -11,3 +11,4 @@
 2. **EFR32MG24 (Node)**
     - Flash the bootloader first.
     - Switch to the ```efr32mg24``` branch to download it and then import it to Simplic Studio.
+3. **Mobile App**
