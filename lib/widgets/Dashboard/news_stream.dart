@@ -5,7 +5,8 @@ import 'package:iot_app/services/realtime_firebase.dart';
 
 Widget buildInfoLogs({required List<String> idSystem}) {
   if (idSystem.isEmpty) {
-    return const SizedBox();
+    return const SizedBox
+        .shrink(); // Cleaner and more expressive for empty cases
   }
   Stream<List<SystemLog>> listLog = DataFirebase.getStreamLogs(idSystem);
 
@@ -40,10 +41,11 @@ Widget buildInfoLogs({required List<String> idSystem}) {
         ),
         child: ListView.builder(
           shrinkWrap: true,
+          physics:
+              const AlwaysScrollableScrollPhysics(), // Ensures scrolling even if items fit in the view
           itemCount: data.length,
           itemBuilder: (context, index) {
             final log = data[index];
-            // Format the timestamp
             final DateTime dateTime = DateTime.parse(log.timestamp);
             final String formattedDate =
                 DateFormat('dd-MM-yyyy – kk:mm:ss').format(dateTime);
@@ -53,60 +55,67 @@ Widget buildInfoLogs({required List<String> idSystem}) {
               margin: const EdgeInsets.symmetric(vertical: 4),
               elevation: 2,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(
+                    12.0), // Increased padding for better spacing
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      formattedDate,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
+                    // Display the date with a prefix icon
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_today,
+                            size: 16, color: Colors.grey[600]), // Calendar icon
+                        SizedBox(width: 8), // Space between icon and text
+                        Text(
+                          formattedDate,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight
+                                .bold, // Bold to highlight the timestamp
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(
+                        height: 10), // Increased space before the next section
                     FutureBuilder<String>(
                       future: DataFirebase.getNameOfSystem(log.idSystem),
                       builder: (context, systemSnapshot) {
                         if (systemSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         if (systemSnapshot.hasError) {
                           return Text('Error: ${systemSnapshot.error}');
                         }
                         if (!systemSnapshot.hasData) {
-                          return SizedBox();
+                          return const SizedBox.shrink();
                         }
 
                         String systemName = systemSnapshot.data!;
-
-                        // Build a list of futures to fetch device names
                         List<Future<String>> deviceNameFutures =
                             log.message.entries.map((entry) {
                           return DataFirebase.getNameOfDevice(
                               log.idSystem, entry.key);
                         }).toList();
 
-                        // Fetch all device names concurrently
                         return FutureBuilder<List<String>>(
                           future: Future.wait(deviceNameFutures),
                           builder: (context, deviceSnapshot) {
                             if (deviceSnapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             if (deviceSnapshot.hasError) {
                               return Text('Error: ${deviceSnapshot.error}');
                             }
                             if (!deviceSnapshot.hasData ||
                                 deviceSnapshot.data!.isEmpty) {
-                              return SizedBox();
+                              return const SizedBox.shrink();
                             }
 
                             List<String> deviceNames = deviceSnapshot.data!;
-
-                            // Display system name, device name, and log messages
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
@@ -115,12 +124,41 @@ Widget buildInfoLogs({required List<String> idSystem}) {
                                 String message =
                                     log.message.entries.elementAt(index).value;
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                  child: Text(
-                                    '$systemName : $deviceName : $message',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black87,
+                                  padding: const EdgeInsets.only(
+                                      bottom:
+                                          8.0), // Increased bottom padding for separation
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: '$systemName : ',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors
+                                                .blue, // Use a different color for the system name
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '$deviceName  ',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors
+                                                .green, // Use a different color for the device name
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        const TextSpan(
+                                          text: '\n',
+                                        ),
+                                        TextSpan(
+                                          text: message,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );

@@ -478,17 +478,17 @@ class BuildHomeWidgets {
                         ),
                         const Spacer(),
                         const SizedBox(width: 10),
-                        data.alarm == 1
-                            ? const Icon(
-                                Icons.online_prediction_outlined,
-                                color: Color.fromARGB(255, 75, 153, 77),
-                                size: 20,
-                              )
-                            : const Icon(
-                                Icons.online_prediction_outlined,
-                                color: Color.fromARGB(255, 126, 127, 128),
-                                size: 20,
-                              )
+                        // online == 1
+                        //     ? const Icon(
+                        //         Icons.online_prediction_outlined,
+                        //         color: Color.fromARGB(255, 75, 153, 77),
+                        //         size: 20,
+                        //       )
+                        //     : const Icon(
+                        //         Icons.online_prediction_outlined,
+                        //         color: Color.fromARGB(255, 126, 127, 128),
+                        //         size: 20,
+                        //       )
                       ],
                     ),
                     const SizedBox(height: 16),

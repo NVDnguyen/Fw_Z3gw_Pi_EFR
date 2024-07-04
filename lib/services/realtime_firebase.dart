@@ -103,6 +103,12 @@ class DataFirebase {
         if (key.trim() != null && snapshot.value == key) {
           // is admin
           await r.update({"admin": 1});
+          DatabaseReference r2 = FirebaseDatabase.instance
+              .ref()
+              .child('Systems')
+              .child(idSystem)
+              .child("admin");
+          await r2.set(u.userID);
         } else {
           // is not admin
           await r.update({"admin": 0});
@@ -155,29 +161,6 @@ class DataFirebase {
       throw e;
     }
   }
-
-  // get list log of a system
-  // static Future<List<SystemLog>> getListLog(String systemID) async {
-  //   try {
-  //     List<SystemLog> logs = [];
-  //     DatabaseReference logsRef = FirebaseDatabase.instance
-  //         .ref()
-  //         .child('Systems')
-  //         .child(systemID)
-  //         .child("log");
-
-  //     DataSnapshot snapshot = await logsRef.get();
-  //     if (snapshot.exists) {
-  //       (snapshot.value as Map<dynamic, dynamic>).forEach((key, value) {
-  //         logs.add(SystemLog.fromJson(key, value));
-  //       });
-  //     }
-  //     return logs;
-  //   } catch (e) {
-  //     print("Error getting system logs: ${e.toString()}");
-  //     throw e;
-  //   }
-  // }
 
   // stream device
   static Stream<Device> getStreamDevice(Device d) {
@@ -285,6 +268,23 @@ class DataFirebase {
       return true;
     } catch (e) {
       print("Error setting device name: ${e.toString()}");
+      return false;
+    }
+  }
+
+  // Push phone number
+  static Future<bool> upPhoneNumber(
+      String idSystem, String level, String phoneNumber) async {
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance
+          .ref()
+          .child('Systems')
+          .child(idSystem)
+          .child("phone");
+      await ref.child(level).set(phoneNumber);
+      return true;
+    } catch (e) {
+      print("Error upPhoneNumber: ${e.toString()}");
       return false;
     }
   }

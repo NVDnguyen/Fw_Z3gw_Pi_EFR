@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:iot_app/constants/properties.dart';
 import 'package:iot_app/models/devices.dart';
 import 'package:iot_app/screen/profile.dart';
+import 'package:iot_app/screen/wellcome.dart';
+import 'package:iot_app/services/notification.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
 import 'package:iot_app/widgets/Dashboard/dashboard_widgets.dart';
 import 'package:iot_app/models/users.dart';
@@ -62,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       await buildSystemList();
       setState(() {
         listIdSys = user.getSystemIDs();
-        helloSTR = "Hi, " + user.username + " !";
+        helloSTR = "Hi, ${user.username} !";
 
         isDataLoaded = true;
       });
@@ -82,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       List<String> listSystems = userNew.getSystemIDs();
       List<Widget> wListSt = [];
-
+      // setup notification
+      setupLogNotifications(listSystems);
       // parallel
       List<Future> futures = listSystems.map((e) async {
         var devicesFuture = DataFirebase.getAllDevices(e);
@@ -205,19 +208,32 @@ class _HomeScreenState extends State<HomeScreen> {
     final TextEditingController systemIDcontroller = TextEditingController();
     final TextEditingController systemKeycontroller = TextEditingController();
     List<Widget> wHome = [
-      Column(
-        children: [
-          Container(
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.9),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [buildInfoLogs(idSystem: listIdSys)],
+      Container(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: buildInfoLogs(idSystem: listIdSys),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ];
+    Future.delayed(const Duration(minutes: 1), () {
+      if (!isDataLoaded) {
+        // Check if the data is still not loaded
+        showSnackBar(context, "Data Error");
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  WellcomeScreen()), // Redirect to TimeoutScreen
+          (Route<dynamic> route) => false, // Remove all routes below
+        );
+      }
+    });
     return isDataLoaded
         ? Scaffold(
             backgroundColor: const Color(0xFFF7F8FA),
@@ -390,51 +406,327 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _settingSystem(String idSystem) {
+    TextEditingController secretKeyController = TextEditingController();
+    TextEditingController systemNameController = TextEditingController();
+
+    // Show the main action dialog
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.warning,
-                  color: Color.fromARGB(255, 255, 77, 7),
-                  size: 40.0,
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                  "This action cannot be undone. \n Are you sure you want to delete?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.0,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Cancel'),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.settings,
+                color: Color.fromARGB(255, 0, 123, 255),
+                size: 40.0,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  print(idSystem);
-                  DataFirebase.removeSystem(idSystem);
-                  setState(() {
-                    wDevices = [];
-                    fetchUserData();
-                    buildSystemList();
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text('DELETE'),
+              SizedBox(height: 10.0),
+              Text(
+                "System Settings",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
-          );
-        });
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.update),
+                title: const Text("Update Name's System"),
+                onTap: () {
+                  _showUpdateDialog(
+                    context,
+                    controller: systemNameController,
+                    labelText: 'Update Name\'s System',
+                    onUpdate: () {
+                      DataFirebase.setNameOfSystem(
+                          idSystem, systemNameController.text);
+                      Navigator.of(context).pop();
+                      setState(() {
+                        wDevices = [];
+                        fetchUserData();
+                        buildSystemList();
+                      });
+                    },
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.vpn_key),
+                title: const Text('Add Secret Key'),
+                onTap: () {
+                  _showUpdateDialog(
+                    context,
+                    controller: secretKeyController,
+                    labelText: 'Add Secret Key',
+                    onUpdate: () {
+                      addSystem(idSystem, secretKeyController.text);
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.phone),
+                title: Text('Add Phone Number'),
+                onTap: () {
+                  _showUpdateDialog2(idSystem);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete),
+                title: Text('Delete this system'),
+                onTap: () {
+                  _deleteDialog(idSystem);
+                },
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('NEXT'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Function to show the update dialog
+  void _showUpdateDialog(
+    BuildContext context, {
+    required TextEditingController controller,
+    required String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    required VoidCallback onUpdate,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.edit,
+                color: Color.fromARGB(255, 0, 123, 255),
+                size: 40.0,
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                labelText,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: labelText,
+              border: OutlineInputBorder(),
+            ),
+            keyboardType: keyboardType,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: onUpdate,
+              child: const Text('Update'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showUpdateDialog2(String idSystem) {
+    TextEditingController phoneNumberController = TextEditingController();
+    String? _selectedValue;
+    List<String> _dropdownItems = ['1', '2', '3', '4'];
+    _selectedValue = _dropdownItems[0];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.edit,
+                    color: Color.fromARGB(255, 0, 123, 255),
+                    size: 40.0,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    "Add Phone Number",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: phoneNumberController,
+                    decoration: const InputDecoration(
+                      labelText: "Add Phone Number",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.phone,
+                  ),
+                  SizedBox(height: 10.0),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 20),
+                          child: Text(
+                            'Select important level:',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          value: _selectedValue,
+                          underline:
+                              Container(), // Xóa đường gạch dưới của DropdownButton
+                          items: _dropdownItems.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedValue = newValue!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_selectedValue != null &&
+                        phoneNumberController.text.isNotEmpty) {
+                      DataFirebase.upPhoneNumber(idSystem, _selectedValue!,
+                          phoneNumberController.text);
+                      Navigator.of(context).pop();
+                    } else {
+                      // Show an alert if fields are empty
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Please fill all the fields.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: const Text('Update'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _deleteDialog(String idSystem) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Icon(
+            Icons.warning,
+            color: Color.fromARGB(255, 255, 77, 7),
+            size: 40.0,
+          ),
+          content: const Text(
+            "This action cannot be undone. \nAre you sure you want to delete?",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14.0,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Perform deletion
+                DataFirebase.removeSystem(idSystem);
+                setState(() {
+                  wDevices = [];
+                  fetchUserData();
+                  buildSystemList();
+                });
+                // Close all dialogs
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text('DELETE'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
