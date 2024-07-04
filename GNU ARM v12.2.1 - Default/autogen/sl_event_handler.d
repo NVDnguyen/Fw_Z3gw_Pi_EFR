@@ -124,6 +124,17 @@ autogen/sl_event_handler.o: ../autogen/sl_event_handler.c \
  c:\gecko_sdk_\gecko_sdk\platform\bootloader\api\btl_interface_parser.h \
  c:\gecko_sdk_\gecko_sdk\platform\bootloader\api\btl_interface_storage.h \
  c:\gecko_sdk_\gecko_sdk\hardware\board\inc\sl_board_control.h \
+ c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\driver\debug\inc\sl_debug_swo.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\gpiointerrupt\inc\gpiointerrupt.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
@@ -131,13 +142,7 @@ autogen/sl_event_handler.o: ../autogen/sl_event_handler.c \
  c:\gecko_sdk_\gecko_sdk\platform\driver\i2cspm\inc\sl_i2cspm.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_i2c.h \
  ../autogen/sl_iostream_init_eusart_instances.h \
- c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
- c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
- c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
- c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
- c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_stdlib_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\hal.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember-types.h \
@@ -438,6 +443,17 @@ c:\gecko_sdk_\gecko_sdk\platform\bootloader\api\application_properties.h:
 c:\gecko_sdk_\gecko_sdk\platform\bootloader\api\btl_interface_parser.h:
 c:\gecko_sdk_\gecko_sdk\platform\bootloader\api\btl_interface_storage.h:
 c:\gecko_sdk_\gecko_sdk\hardware\board\inc\sl_board_control.h:
+c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
+c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\driver\debug\inc\sl_debug_swo.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\gpiointerrupt\inc\gpiointerrupt.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
@@ -445,13 +461,7 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
 c:\gecko_sdk_\gecko_sdk\platform\driver\i2cspm\inc\sl_i2cspm.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_i2c.h:
 ../autogen/sl_iostream_init_eusart_instances.h:
-c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
-c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
-c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
-c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
-c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
-c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_stdlib_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\hal.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember-types.h:

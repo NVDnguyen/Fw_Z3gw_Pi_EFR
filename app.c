@@ -1,69 +1,55 @@
-#include "app/framework/include/af.h"
-#include "sensor_data.h"
-#define SOURCE_ENDPOINT 1
-#define DESTINATION_ENDPOINT 1
-#define MSG_INTERVAL_MS 5000
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_BUILD_SEND_MSG_RAW
+#include "app.h"
+#include "app_log.h"
+#include "sl_simple_button_instances.h"
+#include "sl_simple_button.h"
 
+// Định nghĩa biến sensor
+SensorData sensor;
 
-static sl_zigbee_event_t sendMsgEvent;
-static SensorData data;
-static void sendMsgEventHandler(sl_zigbee_event_t *event);
+static volatile bool app_btn1_pressed = false;
+static bool button_state;
 
-// Function to send a message
-void sendTestMessage(void) {
-  EmberStatus status;
-  EmberNodeId destination =  0x0000; // Node ID of Coordinator
-  EmberNodeId source = emberAfGetNodeId(); // My ID
-  uint8_t message[10];
-  // read data in
-  get_value_sensor(&data);
-  //
-  float temp = (float) data.temperature;
+void app_init(void) {
+  // Khởi tạo chân cảm biến
+  smoke_adc_pin smoke_pin = {.port = gpioPortA, .number = 7};
+  init_read_sensor(&smoke_pin);
 
+//  // Khởi tạo chân Buzzer
+  GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
+  button_state = false;
+}
 
-  snprintf((char *)message, sizeof(message), "test%.2f",temp);
-  static uint8_t msg[10] ={0x00, 0x0A, 0x00};
-  msg[1] +=1;
-  msg[3] = (uint8_t)(source >> 8); // split address
-  msg[4] = (uint8_t)source;
-  msg[5] = data.temperature;
-  msg[6] = data.humidity;
-  msg[7] = data.smoke;
-  msg[8] = data.fire;
-  msg[9] = data.button_state;
+void app_process_action(void) {
+  // Đọc dữ liệu cảm biến
+  get_value_sensor(&sensor);
+  //sl_sleeptimer_delay_millisecond(100);
+  if (app_btn1_pressed) {
+    button_state = !button_state;
+    app_btn1_pressed=false;
+  }
+  if (button_state) {
+    sensor.fire = 3;
+  }
 
-
-  // EmberApsFrame
-  EmberApsFrame apsFrame;
-  apsFrame.profileId = 0x0104; // Home Automation profile ID
-  apsFrame.sourceEndpoint = SOURCE_ENDPOINT;
-  apsFrame.destinationEndpoint = DESTINATION_ENDPOINT;
-  apsFrame.clusterId = 0x000F; // Basic cluster ID
-  apsFrame.options = EMBER_AF_DEFAULT_APS_OPTIONS;
-  apsFrame.groupId = 0;
-  apsFrame.sequence = 0;
-
-  // send Unicast to destination
-  status = emberAfSendUnicast(EMBER_OUTGOING_DIRECT, destination, &apsFrame, 10 , msg);
-  if (status != EMBER_SUCCESS) {
-    emberAfCorePrintln("Error: %d", status);
-  } else {
-    emberAfCorePrintln("Message sent: %s", message);
+  if(sensor.fire > 1){
+      GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 1);
+  }else{
+      GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
+  }
+//   app_log_warning("Temp: %d | Hum: %d | Smoke: %d | Level: %d | Alarm : %d\n", sensor.temperature, sensor.humidity, sensor.smoke, sensor.fire, button_state);
+}
+void sl_button_on_change (const sl_button_t *handle)
+{
+  if (sl_button_get_state (handle) == SL_SIMPLE_BUTTON_PRESSED){
+      // Button pressed.
+      if (&sl_button_btn1 == handle) {
+          app_btn1_pressed = true;
+      }
+    } // Button released.
+  else if (sl_button_get_state(handle) == SL_SIMPLE_BUTTON_RELEASED) {
+    if (&sl_button_btn1 == handle) {
+        app_btn1_pressed = false;
+        printf("released");
+    }
   }
 }
-
-
-void emberAfMainInitCallback(void) {
-  emberAfCorePrintln("Main init");
-  sl_zigbee_event_init(&sendMsgEvent, sendMsgEventHandler);
-  sl_zigbee_event_set_delay_ms(&sendMsgEvent, MSG_INTERVAL_MS);
-}
-
-
-static void sendMsgEventHandler(sl_zigbee_event_t *event) {
-  sendTestMessage();
-  sl_zigbee_event_set_delay_ms(&sendMsgEvent, MSG_INTERVAL_MS);
-}
-
-

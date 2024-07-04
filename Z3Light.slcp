@@ -23,6 +23,7 @@ sdk: {id: gecko_sdk, version: 4.4.3}
 toolchain_settings: []
 component:
 - {id: EFR32MG24B310F1536IM48}
+- {id: app_log}
 - {id: brd2601b}
 - instance: [example]
   id: cli

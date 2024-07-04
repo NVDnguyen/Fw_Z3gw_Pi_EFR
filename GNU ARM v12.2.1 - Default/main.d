@@ -14,7 +14,7 @@ main.o: ../main.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\system\inc\sl_system_process_action.h \
- ../sensor_data.h \
+ ../app.h ../sensor_data.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli_types.h \
  C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_cli_config.h \
@@ -85,7 +85,20 @@ main.o: ../main.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h \
+ c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_simple_button_instances.h \
+ c:\gecko_sdk_\gecko_sdk\platform\driver\button\inc\sl_simple_button.h \
+ c:\gecko_sdk_\gecko_sdk\platform\driver\button\inc\sl_button.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\system\inc\sl_system_init.h:
@@ -101,6 +114,7 @@ c:\gecko_sdk_\gecko_sdk\platform\cmsis\core\include\cmsis_gcc.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\system\inc\sl_system_process_action.h:
+../app.h:
 ../sensor_data.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli_types.h:
@@ -174,3 +188,16 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h:
+c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
+c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_simple_button_instances.h:
+c:\gecko_sdk_\gecko_sdk\platform\driver\button\inc\sl_simple_button.h:
+c:\gecko_sdk_\gecko_sdk\platform\driver\button\inc\sl_button.h:

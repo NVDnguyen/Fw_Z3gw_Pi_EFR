@@ -6,7 +6,7 @@
 2. Connect Pins 
 - buzzer : PD02 - 13
 - Button : PB03 - 11
-- MQ5 : AIN2 - 7
+- MQ5 : AIN2 - 10
 - GND : 1
 - 3V3 : 20
 - 5V : 18  

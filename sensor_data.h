@@ -14,7 +14,6 @@
 
 // Fire, smoke, temp, hum, button, buzzer
 typedef struct {
-  uint8_t button_state;
   uint8_t fire;
   uint8_t temperature;
   uint8_t humidity;
@@ -26,20 +25,10 @@ typedef struct {
   uint8_t number;
 } smoke_adc_pin;
 
-typedef struct {
-  GPIO_Port_TypeDef port;
-  uint8_t number;
-} button_pin;
 
-typedef struct {
-  GPIO_Port_TypeDef port;
-  uint8_t number;
-} alarm_speaker_pin;
-
-void init_read_sensor(smoke_adc_pin *smoke_pin, button_pin *btt_pin, alarm_speaker_pin *speaker_pin);
+void init_read_sensor(smoke_adc_pin *smoke_pin);
 void get_value_sensor(SensorData *data);
-void on_alarm_speaker(void);
-
+uint8_t convert_adc_to_percentage (uint16_t raw_value);
 
 
 #endif // SENSOR_DATA_H

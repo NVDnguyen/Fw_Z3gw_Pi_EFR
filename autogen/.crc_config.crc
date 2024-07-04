@@ -1,5 +1,6 @@
 #CRC Codes for initially generated config files -- do not modify!
 app_assert_config.h=1351236558
+app_log_config.h=-1893283838
 app_properties_config.h=-763091270
 btl_interface_cfg.h=-1719664633
 btl_interface_cfg_s2c4.h=-1993870742
