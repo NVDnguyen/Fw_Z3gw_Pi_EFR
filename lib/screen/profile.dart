@@ -40,103 +40,120 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> refreshProfile() async {
+    fetchUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(247, 248, 250, 1),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(247, 248, 250, 1),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: isDataLoaded
-          ? SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 24),
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: FileImage(File(user.image)),
-                        backgroundColor: Colors.grey.shade200,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        user.username,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "@${user.username.toLowerCase().replaceAll(' ', '_')}",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      _buildProfileOption(
-                        icon: Icons.settings,
-                        text: "Settings",
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfileSetting(),
+        backgroundColor: Color.fromRGBO(247, 248, 250, 1),
+        body: RefreshIndicator(
+          onRefresh: refreshProfile,
+          child: isDataLoaded
+              ? SingleChildScrollView(
+                  child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 30),
+                      constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context)
+                              .size
+                              .height), // Ensure it fills the screen
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 24),
+                          GestureDetector(
+                            onTap: () {
+                              showFullImage(context, user.image);
+                            },
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: FileImage(File(user.image)),
+                              backgroundColor: Colors.grey.shade200,
                             ),
-                          );
-                        },
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            user.username,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "@${user.username.toLowerCase().replaceAll(' ', '_')}",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 50),
+                          _buildProfileOption(
+                            icon: Icons.settings,
+                            text: "Settings",
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfileSetting(),
+                                ),
+                              );
+                            },
+                          ),
+                          const Divider(),
+                          _buildProfileOption(
+                            icon: Icons.device_hub_outlined,
+                            text: "My Systems",
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MySystemScreen(),
+                                  ));
+                            },
+                          ),
+                          const Divider(),
+                          _buildProfileOption(
+                            icon: Icons.group,
+                            text: "Group ",
+                            onTap: () {
+                              showDonateDialog1(context);
+                            },
+                          ),
+                          const Divider(),
+                          _buildProfileOption(
+                            icon: Icons.attach_money_sharp,
+                            text: "Donate",
+                            onTap: () {
+                              showDonateDialog(context);
+                            },
+                          ),
+                          const Divider(),
+                          _buildProfileOption(
+                            icon: Icons.share,
+                            text: "Share",
+                            onTap: () {},
+                          ),
+                          const Divider(),
+                          _buildProfileOption(
+                            icon: Icons.logout,
+                            text: "Log out",
+                            onTap: () {
+                              _logout();
+                            },
+                          ),
+                        ],
                       ),
-                      const Divider(),
-                      _buildProfileOption(
-                        icon: Icons.device_hub_outlined,
-                        text: "My Systems",
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MySystemScreen(),
-                              ));
-                        },
-                      ),
-                      const Divider(),
-                      _buildProfileOption(
-                        icon: Icons.group,
-                        text: "Group ",
-                        onTap: () {},
-                      ),
-                      const Divider(),
-                      _buildProfileOption(
-                        icon: Icons.attach_money_sharp,
-                        text: "Donate",
-                        onTap: () {},
-                      ),
-                      const Divider(),
-                      _buildProfileOption(
-                        icon: Icons.share,
-                        text: "Share",
-                        onTap: () {},
-                      ),
-                      const Divider(),
-                      _buildProfileOption(
-                        icon: Icons.logout,
-                        text: "Log out",
-                        onTap: () {
-                          _logout();
-                        },
-                      ),
-                    ],
+                    ),
                   ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
-    );
+        ));
   }
 
   Widget _buildProfileOption({
@@ -159,6 +176,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SharedPreferencesProvider.clearDataUser();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => WellcomeScreen()),
+    );
+  }
+
+  void showDonateDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: 200,
+            height: 270, // Adjust size according to your GIF and preferences
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/qr.png'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showFullImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Color.fromARGB(0, 255, 255, 255),
+          insetPadding: EdgeInsets.all(10),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: FileImage(File(imagePath)), fit: BoxFit.contain),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void showDonateDialog1(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          child: Container(
+            width: double.infinity,
+            height: 200, // Adjust size according to your GIF and preferences
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/gif/wait.gif'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        );
+      },
     );
   }
 }

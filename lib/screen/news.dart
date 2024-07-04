@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iot_app/models/users.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
+import 'package:iot_app/widgets/Dashboard/news_stream.dart';
 
 class NewsScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class NewsScreen extends StatefulWidget {
 
 class _NewsScreenState extends State<NewsScreen> {
   late Users user;
-
+  late Stream<List<String>> systemIdStream;
   List<String> lSystem = [];
 
   @override
@@ -30,9 +31,7 @@ class _NewsScreenState extends State<NewsScreen> {
         SharedPreferencesProvider.setDataUser(user);
       }
 
-      setState(() {
-        lSystem = user.getSystemIDs();
-      });
+      initiateSystemIdStream();
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
@@ -40,17 +39,53 @@ class _NewsScreenState extends State<NewsScreen> {
     }
   }
 
+  void initiateSystemIdStream() {
+    systemIdStream = DataFirebase.streamSystemIds(user.userID);
+
+    systemIdStream.listen((List<String> systemIds) {
+      setState(() {
+        lSystem = systemIds; // Update the system ID list on new data
+      });
+    }, onError: (error) {
+      if (kDebugMode) {
+        print('Error streaming system IDs: $error');
+      }
+    });
+  }
+
+  Future<void> refreshData() async {
+    await fetchUserData();
+    // Additional data that needs to be refreshed can be added here
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Stream<List<SystemLog>> listLog = DataFirebase.getStreamLogs(lSystem);
+    // Assuming buildInfoLogs returns a widget that displays logs properly.
+    Widget infoLogsWidget = buildInfoLogs(idSystem: lSystem);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
         title: Text('News'),
         backgroundColor: const Color(0xFFF7F8FA),
       ),
-      body: Column(
-        children: [],
+      body: RefreshIndicator(
+        onRefresh: refreshData,
+        child: SingleChildScrollView(
+          physics:
+              AlwaysScrollableScrollPhysics(), // Ensures the refresh indicator can be triggered
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height *
+                    0.8, // Adjust height according to your need
+                child: infoLogsWidget,
+              ),
+              const SizedBox(height: 50),
+            ],
+          ),
+        ),
       ),
     );
   }

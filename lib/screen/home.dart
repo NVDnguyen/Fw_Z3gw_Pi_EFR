@@ -8,8 +8,8 @@ import 'package:iot_app/constants/properties.dart';
 import 'package:iot_app/models/devices.dart';
 import 'package:iot_app/screen/profile.dart';
 import 'package:iot_app/screen/wellcome.dart';
-import 'package:iot_app/services/notification.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
+import 'package:iot_app/utils/qr_view.dart';
 import 'package:iot_app/widgets/Dashboard/dashboard_widgets.dart';
 import 'package:iot_app/models/users.dart';
 import 'package:iot_app/provider/data_user.dart';
@@ -84,21 +84,25 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       List<String> listSystems = userNew.getSystemIDs();
       List<Widget> wListSt = [];
-      // setup notification
-      setupLogNotifications(listSystems);
-      // parallel
+
       List<Future> futures = listSystems.map((e) async {
         var devicesFuture = DataFirebase.getAllDevices(e);
         var systemNameFuture = DataFirebase.getNameOfSystem(e);
         return Future.wait([devicesFuture, systemNameFuture, Future.value(e)]);
       }).toList();
 
-      // wait for all done
       var results = await Future.wait(futures);
-
-      // process results
+      wListSt.add(
+        BuildHomeWidgets.buildDeviceCard("Center", Icons.home, onTap: () {
+          setState(() {
+            isHome = true;
+            selectedSystem = "H";
+            buildSystemList();
+          });
+        }),
+      );
       for (var result in results) {
-        List<Device> dvc = result[0];
+        lDevice = result[0];
         String systemName = result[1];
         String idSystem = result[2];
 
@@ -106,91 +110,41 @@ class _HomeScreenState extends State<HomeScreen> {
           BuildHomeWidgets.buildSystemCard(
             idSystem == selectedSystem,
             systemName,
-            //'https://i.imgur.com/jFoufpl.jpeg',
             'https://img.freepik.com/premium-photo/concept-home-devices-multiple-houses-conected-networked_1059430-54450.jpg',
             onTap: () {
-              //system ontap
+              buildSystemList();
               setState(() {
                 isHome = false;
-                //fetchUserData();
-                buildSystemList();
                 selectedSystem = idSystem;
-                wDevices = [];
-                // build device
-                for (var device in dvc) {
-                  Widget deviceWidget =
-                      BuildHomeWidgets.buildInfoSensor2(device, onPress: () {
-                    // change name
-                    final TextEditingController newNameDevice =
-                        TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(height: 16),
-                              TextField(
-                                controller: newNameDevice,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "New name",
-                                  prefixIcon:
-                                      Icon(Icons.devices_other_outlined),
-                                ),
-                              ),
-                            ],
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                updateDeviceName(device, newNameDevice.text);
-                                setState(() {
-                                  fetchUserData();
-                                  buildSystemList();
-                                });
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Next'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  });
-                  if (device.fire > FIRE_THRESHOLD) {
-                    wDevices.insert(0, deviceWidget);
-                  } else {
-                    wDevices.add(deviceWidget);
-                  }
-                }
+                buildDeviceList();
               });
             },
-
             onLongPress: () {
               _settingSystem(idSystem);
             },
           ),
         );
       }
+      wListSt.add(
+        BuildHomeWidgets.buildDeviceCard(
+          "Add Systems",
+          Icons.add_circle_outline,
+          onTap: () {
+            _addSystemAction();
+          },
+        ),
+      );
 
       setState(() {
-        wListSt.isEmpty ? isNotHaveSystem = true : isNotHaveSystem = false;
+        wListSt.length == 2 ? isNotHaveSystem = true : isNotHaveSystem = false;
         wSystems = wListSt;
-
         wNoSystem = [
           BuildHomeWidgets.buildInfoCard(
               "Bạn chưa lắp đặt hệ thống thiết bị nào",
               "Hãy lắp đặt các thiết bị an toàn, để bảo vệ bản thân, gia đình và mọi người xung quanh.",
               "Hướng cài đặt và sử dụng thiết bị",
-              onTap: () => _launchUrl(Uri.parse('https://shopee.vn/'))),
+              onTap: () =>
+                  _launchUrl(Uri.parse('https://firewisetech.tiiny.site/'))),
           const SizedBox(
             height: 20,
           ),
@@ -203,10 +157,66 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void buildDeviceList() {
+    List<Widget> deviceWidgets = [];
+    for (var device in lDevice) {
+      Widget deviceWidget =
+          BuildHomeWidgets.buildInfoSensor2(device, onPress: () {
+        final TextEditingController newNameDevice = TextEditingController();
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: newNameDevice,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "New name",
+                      prefixIcon: Icon(Icons.devices_other_outlined),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _updateDeviceName(device, newNameDevice.text);
+                    setState(() {
+                      fetchUserData();
+                      buildSystemList();
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Next'),
+                ),
+              ],
+            );
+          },
+        );
+      });
+      if (device.fire > FIRE_THRESHOLD) {
+        deviceWidgets.insert(0, deviceWidget);
+      } else {
+        deviceWidgets.add(deviceWidget);
+      }
+    }
+    setState(() {
+      wDevices = deviceWidgets;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController systemIDcontroller = TextEditingController();
-    final TextEditingController systemKeycontroller = TextEditingController();
     List<Widget> wHome = [
       Container(
         constraints:
@@ -214,13 +224,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: buildInfoLogs(idSystem: listIdSys),
-            ),
+            buildInfo1Logs(idSystem: listIdSys),
           ],
         ),
       ),
     ];
+
     Future.delayed(const Duration(minutes: 1), () {
       if (!isDataLoaded) {
         // Check if the data is still not loaded
@@ -234,6 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     });
+
     return isDataLoaded
         ? Scaffold(
             backgroundColor: const Color(0xFFF7F8FA),
@@ -252,10 +262,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen()),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const ProfileScreen()),
+                      // );
                     },
                     child: CircleAvatar(
                       backgroundImage: FileImage(File(user
@@ -265,102 +275,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          BuildHomeWidgets.buildDeviceCard("Center", Icons.home,
-                              onTap: () {
-                            setState(() {
-                              isHome = true;
-                              selectedSystem = "H";
-                              buildSystemList();
-                            });
-                          }),
-                          ...wSystems,
-                          BuildHomeWidgets.buildDeviceCard(
-                            "Add Systems",
-                            Icons.add_circle_outline,
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      "Add New System",
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Text(
-                                          "Please enter the System ID *",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        TextField(
-                                          controller: systemIDcontroller,
-                                          decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            labelText: 'System ID',
-                                            prefixIcon: Icon(Icons.device_hub),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        const Text(
-                                          "Please enter the Admin key",
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        TextField(
-                                          controller: systemKeycontroller,
-                                          decoration: const InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            labelText: 'Key',
-                                            prefixIcon: Icon(Icons.key),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          addSystem(systemIDcontroller.text,
-                                              systemKeycontroller.text);
-                                          setState(() {
-                                            fetchUserData();
-                                            buildSystemList();
-                                          });
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Add'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
+            body: RefreshIndicator(
+              onRefresh: _refreshScreen,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ...wSystems,
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ...(isNotHaveSystem ? wNoSystem : []),
-                    ...(isHome ? wHome : wDevices),
-                  ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ...(isNotHaveSystem ? wNoSystem : []),
+                      ...(isHome ? wHome : wDevices),
+                    ],
+                  ),
                 ),
               ),
             ))
@@ -369,7 +306,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 CircularProgressIndicator(backgroundColor: Color(0xFFF7F8FA)));
   }
 
-  Future<void> addSystem(String idSystem, String key) async {
+  Future<void> _refreshScreen() async {
+    await fetchUserData();
+    await buildSystemList();
+    setState(() {});
+  }
+
+  Future<void> _addSystem(String idSystem, String key) async {
     try {
       if (await DataFirebase.addSystem(idSystem, key, user)) {
         showSnackBar(context, "Add System Successfully");
@@ -381,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> updateDeviceName(Device device, String text) async {
+  Future<void> _updateDeviceName(Device device, String text) async {
     bool isAdmin = user.isAdmin(device.systemID);
     try {
       if (isAdmin) {
@@ -467,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: secretKeyController,
                     labelText: 'Add Secret Key',
                     onUpdate: () {
-                      addSystem(idSystem, secretKeyController.text);
+                      _addSystem(idSystem, secretKeyController.text);
                       Navigator.of(context).pop();
                     },
                   );
@@ -503,6 +446,103 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 // Function to show the update dialog
+  void _addSystemAction() {
+    final TextEditingController systemIDcontroller = TextEditingController();
+    final TextEditingController systemKeycontroller = TextEditingController();
+
+    void _scanQRCode(TextEditingController controller) async {
+      final result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => QRViewExample(controller),
+      ));
+      if (result != null) {
+        controller.text = result;
+      }
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            "Add New System",
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Please enter the System ID *",
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: systemIDcontroller,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'System ID',
+                        prefixIcon: Icon(Icons.device_hub),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.qr_code_scanner),
+                    onPressed: () => _scanQRCode(systemIDcontroller),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Please enter the Admin key",
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: systemKeycontroller,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Key',
+                        prefixIcon: Icon(Icons.key),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.qr_code_scanner),
+                    onPressed: () => _scanQRCode(systemKeycontroller),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _addSystem(systemIDcontroller.text, systemKeycontroller.text);
+                setState(() {
+                  fetchUserData();
+                  buildSystemList();
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showUpdateDialog(
     BuildContext context, {
     required TextEditingController controller,

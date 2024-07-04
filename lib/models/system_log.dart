@@ -7,10 +7,8 @@ class SystemLog {
 
   factory SystemLog.fromJson(
       String timestamp, String idSystem, Map<dynamic, dynamic> json) {
-    // Assuming the log messages are string key-value pairs
     Map<String, String> messages =
         json.map((key, value) => MapEntry(key.toString(), value.toString()));
-
     return SystemLog(timestamp, messages, idSystem);
   }
 }

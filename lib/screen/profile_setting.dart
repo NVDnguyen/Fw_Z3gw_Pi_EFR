@@ -6,6 +6,7 @@ import 'package:iot_app/screen/profile.dart';
 import 'package:iot_app/services/auth_firebase.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/provider/image_picker.dart';
+import 'package:iot_app/services/realtime_firebase.dart';
 import 'package:iot_app/widgets/Notice/notice_snackbar.dart';
 
 class ProfileSetting extends StatefulWidget {
@@ -16,11 +17,14 @@ class ProfileSetting extends StatefulWidget {
 }
 
 class _ProfileSettingState extends State<ProfileSetting> {
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   late Users user;
-  late String _image;
+  String _image =
+      'assets/images/default_user.jpg'; // Default path immediately assigned
+
   bool isDataLoaded = false;
 
   @override
@@ -32,8 +36,8 @@ class _ProfileSettingState extends State<ProfileSetting> {
   Future<void> FetchUserData1() async {
     try {
       user = await SharedPreferencesProvider.getDataUser();
-      _image = user.image;
-      // Gán giá trị cũ vào các TextEditingController
+      _image = user.image ??
+          'assets/images/user1.jpg'; // Override with actual user image if available
       _usernameController.text = user.username;
       _addressController.text = user.address;
       setState(() {
@@ -41,6 +45,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
       });
     } catch (e) {
       print(e.toString());
+      // Even if this fails, _image has a default from initialization
+      setState(() {
+        isDataLoaded = true;
+      });
     }
   }
 
@@ -51,12 +59,10 @@ class _ProfileSettingState extends State<ProfileSetting> {
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(247, 248, 250, 1),
         title: Text('Edit Profile'),
-        // Nút "Back" trên App bar
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()));
+            Navigator.pop(context);
           },
         ),
       ),
@@ -71,16 +77,16 @@ class _ProfileSettingState extends State<ProfileSetting> {
                   children: [
                     CircleAvatar(
                       radius: 60,
-                      backgroundImage:
-                          _image.isNotEmpty ? FileImage(File(_image)) : null,
+                      backgroundImage: _image.isNotEmpty
+                          ? FileImage(File(_image))
+                          : AssetImage('assets/images/user1.jpg')
+                              as ImageProvider,
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {
-                          _imagePicker();
-                        },
+                        onTap: _imagePicker,
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
@@ -98,76 +104,30 @@ class _ProfileSettingState extends State<ProfileSetting> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'User Name',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               TextField(
                 controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'User Name'),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Address',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               TextField(
                 controller: _addressController,
+                decoration: const InputDecoration(labelText: 'Address'),
               ),
               const SizedBox(height: 20),
-              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                // ElevatedButton(
-                //   onPressed: () {
-                //   Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => Layout(),
-                //             ),
-                //           );
-                //   },
-                //   child: const Text('Back'),
-                // ),
-                // const SizedBox(
-                //   width: 30,
-                // ),
-                ElevatedButton(
-                  onPressed: () {
-                    _save(context);
-                  },
-                  child: const Text('Save Changes'),
-                ),
-              ])
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email Contact'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => _save(context),
+                child: const Text('Save Changes'),
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _save(BuildContext context) async {
-    // Viết mã để lưu thông tin mới
-    String? _username = _usernameController.text;
-    String? _address = _addressController.text;
-    Users us = user.updateUser(_username, _address, _image);
-    print(us.username + us.address);
-    AuthService _auth = AuthService();
-    if (await _auth.updateUserInfo(us)) {
-      if (await SharedPreferencesProvider.setDataUser(us)) {
-        Navigator.pop(
-            context, MaterialPageRoute(builder: (context) => ProfileScreen()));
-      } else {
-        print("FetchUserData.setDataUser fail");
-      }
-    } else {
-      showSnackBar(context, "Update user fail");
-    }
-  }
-
-  @override
-  void dispose() {
-    // Giải phóng bộ nhớ khi widget bị hủy
-    _usernameController.dispose();
-    _addressController.dispose();
-    super.dispose();
   }
 
   void _imagePicker() async {
@@ -177,5 +137,37 @@ class _ProfileSettingState extends State<ProfileSetting> {
         _image = pickedFile.path;
       });
     }
+  }
+
+  Future<void> _save(BuildContext context) async {
+    // Code to save user information
+    bool check = await DataFirebase.updateUser(
+        user,
+        _image,
+        _usernameController.text,
+        _addressController.text,
+        _emailController.text);
+
+    if (check) {
+      // Update the local user object and save it in shared preferences
+      user.updateUser(
+          _usernameController.text, _addressController.text, _image);
+      SharedPreferencesProvider.setDataUser(user);
+
+      // Show success message
+      showSnackBar(context, "Update Success !");
+      Navigator.pop(context);
+    } else {
+      // Show failure message
+      showSnackBar(context, "Update Fails !");
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _addressController.dispose();
+    super.dispose();
   }
 }

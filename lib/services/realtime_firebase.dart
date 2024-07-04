@@ -39,6 +39,97 @@ class DataFirebase {
     }
   }
 
+  // update data user
+  static Future<bool> updateUser(Users u, String image, String userName,
+      String address, String email) async {
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref('users').child(u.userID);
+
+    try {
+      // Update all fields simultaneously using update method
+      await ref.update({
+        "address": address,
+        "image": image,
+        "user_name": userName,
+        "email": email
+      });
+      return true;
+    } catch (e) {
+      print("Failed to update user: ${e.toString()}");
+      return false;
+    }
+  }
+
+  // Stream user data for a specific user
+  static Stream<Users> streamUserData(String userId) {
+    StreamController<Users> controller = StreamController<Users>();
+
+    try {
+      DatabaseReference userRef =
+          FirebaseDatabase.instance.ref().child('users').child(userId);
+
+      // Listen for changes on the user node
+      userRef.onValue.listen((event) {
+        if (event.snapshot.exists) {
+          Map<dynamic, dynamic> userData =
+              event.snapshot.value as Map<dynamic, dynamic>;
+          // Assuming you have a method to parse the Map into a Users object
+          Users user = Users.fromJson(Map<String, dynamic>.from(userData));
+          controller.add(user); // Add the user to the stream
+        } else {
+          controller.addError("No user found for ID: $userId");
+        }
+      }, onError: (error) {
+        // Handle errors, possibly adding error handling to the stream
+        print("Error streaming user data: ${error.toString()}");
+        controller.addError(error);
+      });
+    } catch (e) {
+      // Handle exceptions, possibly adding error handling to the stream
+      print("Exception in streaming user data: ${e.toString()}");
+      controller.addError(e);
+    }
+
+    return controller.stream;
+  }
+
+  // Stream system IDs for a specific user
+  static Stream<List<String>> streamSystemIds(String userId) {
+    StreamController<List<String>> controller =
+        StreamController<List<String>>();
+
+    try {
+      DatabaseReference systemsRef = FirebaseDatabase.instance
+          .ref()
+          .child('users')
+          .child(userId)
+          .child("systems");
+
+      // Listen for changes on the "systems" node
+      systemsRef.onValue.listen((event) {
+        final systemsData = event.snapshot.value;
+        List<String> systemIds = [];
+
+        if (systemsData != null && systemsData is Map) {
+          systemIds = systemsData.keys.cast<String>().toList();
+        }
+
+        // Add the list of system IDs to the stream
+        controller.add(systemIds);
+      }, onError: (error) {
+        // Handle errors, possibly adding error handling to the stream
+        print("Error streaming system IDs: ${error.toString()}");
+        controller.addError(error);
+      });
+    } catch (e) {
+      // Handle exceptions, possibly adding error handling to the stream
+      print("Exception in streaming system IDs: ${e.toString()}");
+      controller.addError(e);
+    }
+
+    return controller.stream;
+  }
+
   // get name of a system
   static Future<String> getNameOfSystem(String idSystem) async {
     try {
@@ -57,6 +148,37 @@ class DataFirebase {
       print("Error getting system name: ${e.toString()}");
       return "";
     }
+  }
+
+  // get info of a admin
+  static Future<Map<String, String>> getAdminInfo(String idSystem) async {
+    Map<String, String> adminInfo = {'name': '', 'email': ''};
+    try {
+      DatabaseReference adminRef = FirebaseDatabase.instance
+          .ref()
+          .child('Systems')
+          .child(idSystem)
+          .child("admin");
+
+      DataSnapshot adminSnapshot = await adminRef.get();
+      if (adminSnapshot.exists) {
+        String uid = adminSnapshot.value as String;
+
+        // Fetch user details by uid
+        DatabaseReference userRef =
+            FirebaseDatabase.instance.ref().child('users').child(uid);
+
+        DataSnapshot userSnapshot = await userRef.get();
+        if (userSnapshot.exists) {
+          Map userData = userSnapshot.value as Map;
+          adminInfo['name'] = userData['user_name'] ?? '';
+          adminInfo['email'] = userData['email'] ?? '';
+        }
+      }
+    } catch (e) {
+      print("Error getting admin info: ${e.toString()}");
+    }
+    return adminInfo;
   }
 
   // get name of device
@@ -201,48 +323,55 @@ class DataFirebase {
     }
   }
 
-  // stream logs
+  // Stream logs with type safety checks
   static Stream<List<SystemLog>> getStreamLogs(List<String> idSystems) {
     StreamController<List<SystemLog>> controller =
         StreamController<List<SystemLog>>();
     List<StreamSubscription> subscriptions = [];
     Map<String, List<SystemLog>> systemLogsMap = {};
 
-    void handleError(error) {
+    void handleError(error, stackTrace) {
       if (!controller.isClosed) {
-        controller.addError(error);
+        controller.addError(error, stackTrace);
+      }
+    }
+
+    void handleData(DatabaseEvent event, String idSystem) {
+      if (event.snapshot.exists) {
+        final dynamic data = event.snapshot.value;
+        List<SystemLog> logs = [];
+        if (data is Map) {
+          logs = (data as Map<dynamic, dynamic>).entries.map((entry) {
+            return SystemLog.fromJson(
+                entry.key, idSystem, entry.value as Map<dynamic, dynamic>);
+          }).toList();
+        } else if (data is List) {
+          // Handle data if it's a list, assuming each item in the list can be a Map
+          for (var i = 0; i < data.length; i++) {
+            if (data[i] is Map) {
+              logs.add(SystemLog.fromJson(i.toString(), idSystem, data[i]));
+            }
+          }
+        }
+        if (!controller.isClosed) {
+          systemLogsMap[idSystem] = logs;
+          List<SystemLog> allLogs =
+              systemLogsMap.values.expand((logs) => logs).toList();
+          allLogs.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+          controller.add(allLogs);
+        }
       }
     }
 
     for (String idSystem in idSystems) {
-      DatabaseReference deviceRef = FirebaseDatabase.instance
+      DatabaseReference logRef = FirebaseDatabase.instance
           .ref()
           .child('Systems')
           .child(idSystem)
           .child("log");
-
-      StreamSubscription subscription = deviceRef.onValue.listen((event) {
-        if (event.snapshot.exists) {
-          final Map<dynamic, dynamic> data =
-              event.snapshot.value as Map<dynamic, dynamic>;
-
-          final List<SystemLog> logs = data.entries
-              .map((entry) =>
-                  SystemLog.fromJson(entry.key, idSystem, entry.value))
-              .toList();
-
-          if (!controller.isClosed) {
-            systemLogsMap[idSystem] = logs;
-            // Flatten the map values into a single list
-            List<SystemLog> allLogs =
-                systemLogsMap.values.expand((logs) => logs).toList();
-            // Sort logs by timestamp in descending order
-            allLogs.sort((a, b) => b.timestamp.compareTo(a.timestamp));
-            controller.add(allLogs);
-          }
-        }
+      StreamSubscription subscription = logRef.onValue.listen((event) {
+        handleData(event, idSystem);
       }, onError: handleError);
-
       subscriptions.add(subscription);
     }
 

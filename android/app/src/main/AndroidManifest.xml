@@ -12,7 +12,7 @@ https://developer.android.com/about/versions/12/features/bluetooth-permissions -
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="IoT Esp"
+        android:label="FwTech"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
