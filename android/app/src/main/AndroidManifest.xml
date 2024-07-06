@@ -10,7 +10,7 @@ https://developer.android.com/about/versions/12/features/bluetooth-permissions -
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:label="FwTech"
         android:name="${applicationName}"

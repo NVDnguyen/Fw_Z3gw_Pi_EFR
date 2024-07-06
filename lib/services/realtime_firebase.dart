@@ -234,6 +234,12 @@ class DataFirebase {
         } else {
           // is not admin
           await r.update({"admin": 0});
+          DatabaseReference r2 = FirebaseDatabase.instance
+              .ref()
+              .child('Systems')
+              .child(idSystem)
+              .child("guests");
+          await r2.child(u.userID).set("0");
         }
       }
 

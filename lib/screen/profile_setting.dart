@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:iot_app/constants/properties.dart';
 import 'package:iot_app/models/users.dart';
-import 'package:iot_app/screen/profile.dart';
-import 'package:iot_app/services/auth_firebase.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/provider/image_picker.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
+import 'package:iot_app/services/storage_firebase.dart';
 import 'package:iot_app/widgets/Notice/notice_snackbar.dart';
 
 class ProfileSetting extends StatefulWidget {
@@ -22,34 +22,27 @@ class _ProfileSettingState extends State<ProfileSetting> {
   final TextEditingController _emailController = TextEditingController();
 
   late Users user;
-  String _image =
-      'assets/images/default_user.jpg'; // Default path immediately assigned
-
-  bool isDataLoaded = false;
+  String _imagePath = IMAGE_DEFAULT;
+  File? _selectedImage;
+  bool _isDataLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    FetchUserData1();
+    _fetchUserData();
   }
 
-  Future<void> FetchUserData1() async {
+  Future<void> _fetchUserData() async {
     try {
       user = await SharedPreferencesProvider.getDataUser();
-      _image = user.image ??
-          'assets/images/user1.jpg'; // Override with actual user image if available
+      _imagePath = user.image;
       _usernameController.text = user.username;
       _addressController.text = user.address;
-      setState(() {
-        isDataLoaded = true;
-      });
+      _emailController.text = user.email; // Assuming you may want to show email
     } catch (e) {
-      print(e.toString());
-      // Even if this fails, _image has a default from initialization
-      setState(() {
-        isDataLoaded = true;
-      });
+      print('Failed to fetch user data: $e');
     }
+    setState(() => _isDataLoaded = true);
   }
 
   @override
@@ -57,117 +50,109 @@ class _ProfileSettingState extends State<ProfileSetting> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(247, 248, 250, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(247, 248, 250, 1),
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: _image.isNotEmpty
-                          ? FileImage(File(_image))
-                          : AssetImage('assets/images/user1.jpg')
-                              as ImageProvider,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: _imagePicker,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.camera_alt,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'User Name'),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _addressController,
-                decoration: const InputDecoration(labelText: 'Address'),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email Contact'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _save(context),
-                child: const Text('Save Changes'),
-              ),
-            ],
+      body: _isDataLoaded
+          ? _buildProfileForm()
+          : const CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildProfileForm() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildProfileImage(),
+          const SizedBox(height: 20),
+          _buildTextField(_usernameController, 'User Name'),
+          const SizedBox(height: 20),
+          _buildTextField(_addressController, 'Address'),
+          const SizedBox(height: 20),
+          _buildTextField(_emailController, 'Email Contact'),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _saveProfile,
+            child: const Text('Save Changes'),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileImage() {
+    return Center(
+      child: GestureDetector(
+        onTap: _handleImagePicker,
+        child: CircleAvatar(
+          radius: 60,
+          backgroundImage: _selectedImage != null
+              ? FileImage(_selectedImage!)
+                  as ImageProvider // Correctly cast as ImageProvider
+              : NetworkImage(_imagePath)
+                  as ImageProvider, // Same casting here for consistency
+          child: const Icon(Icons.camera_alt, color: Colors.grey),
         ),
       ),
     );
   }
 
-  void _imagePicker() async {
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(labelText: label),
+    );
+  }
+
+  void _handleImagePicker() async {
     final pickedFile = await pickImage();
     if (pickedFile != null) {
       setState(() {
-        _image = pickedFile.path;
+        _selectedImage = File(pickedFile.path);
       });
     }
   }
 
-  Future<void> _save(BuildContext context) async {
-    // Code to save user information
-    bool check = await DataFirebase.updateUser(
-        user,
-        _image,
-        _usernameController.text,
-        _addressController.text,
-        _emailController.text);
+  Future<void> _saveProfile() async {
+    try {
+      if (user.image != IMAGE_DEFAULT) {
+        FirebaseStorageService.deleteFile(user.image);
+      }
+      String imageUrl = _selectedImage != null
+          ? await FirebaseStorageService.uploadFile(
+              user.userID, _selectedImage!)
+          : _imagePath;
 
-    if (check) {
-      // Update the local user object and save it in shared preferences
-      user.updateUser(
-          _usernameController.text, _addressController.text, _image);
-      SharedPreferencesProvider.setDataUser(user);
+      user.updateImg(imageUrl);
+      bool updateSuccess = await DataFirebase.updateUser(
+          user,
+          imageUrl,
+          _usernameController.text,
+          _addressController.text,
+          _emailController.text);
 
-      // Show success message
-      showSnackBar(context, "Update Success !");
-      Navigator.pop(context);
-    } else {
-      // Show failure message
-      showSnackBar(context, "Update Fails !");
-      Navigator.pop(context);
+      if (updateSuccess) {
+        SharedPreferencesProvider.setDataUser(user);
+        showSnackBar(context, "Update Successful!");
+      } else {
+        throw Exception('Failed to update user info');
+      }
+    } catch (e) {
+      showSnackBar(context, "Update Failed: $e");
     }
+    Navigator.pop(context);
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
     _addressController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 }

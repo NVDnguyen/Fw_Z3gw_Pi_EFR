@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:iot_app/models/users.dart';
 
 class AuthService {
@@ -89,6 +90,13 @@ class AuthService {
           'image': user.image,
           'systems': user.systems,
         });
+        // // Get the FCM token
+        // final _fbmsg = FirebaseMessaging.instace();
+        String? token = await FirebaseMessaging.instance.getToken();
+        if (token != null) {
+          // Save the FCM token to the user's node in the database
+          userRef.child('fcmToken').set(token);
+        }
 
         return true;
       } else {

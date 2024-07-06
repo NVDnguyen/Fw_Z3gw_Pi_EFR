@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundImage: FileImage(File(user.image)),
+                              backgroundImage: NetworkImage(user.image),
                               backgroundColor: Colors.grey.shade200,
                             ),
                           ),
@@ -216,12 +216,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: FileImage(File(imagePath)), fit: BoxFit.contain),
+                      image: NetworkImage(imagePath), fit: BoxFit.contain),
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.close, color: Colors.white),
+                icon: const Icon(Icons.close, color: Colors.white),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ],

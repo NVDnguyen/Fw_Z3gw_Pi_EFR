@@ -1,39 +1,56 @@
+import 'dart:async';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:iot_app/Layout/layout.dart';
 import 'package:iot_app/provider/user_provider.dart';
 import 'package:iot_app/screen/wellcome.dart';
+import 'package:iot_app/services/notification.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await AwesomeNotifications().initialize(
-    null, // icon for your app notification
+
+  AwesomeNotifications().initialize(
+    'resource://drawable/logo', // Make sure this resource exists
     [
       NotificationChannel(
         channelKey: 'fwtech',
-        channelName: 'fwtech',
-        channelDescription: 'Notification channel for FwTech',
-        defaultColor: Color(0xFF9D50DD),
-        ledColor: Colors.white,
-        playSound: true,
-        enableLights: true,
-        enableVibration: true,
+        channelName: 'System Notifications',
+        channelDescription: 'Notification channel for system updates',
+        defaultColor: Colors.deepPurple,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
       )
     ],
   );
 
-  // Check and request notification permission at app startup
   bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
   if (!isAllowed) {
-    // This will prompt the user for permission when the app starts
     await AwesomeNotifications().requestPermissionToSendNotifications();
   }
 
+  final service = FlutterBackgroundService();
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: true,
+    ),
+    iosConfiguration: IosConfiguration(),
+  );
+
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+void onStart(ServiceInstance service) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLogNotifications();
 }
 
 class MyApp extends StatelessWidget {

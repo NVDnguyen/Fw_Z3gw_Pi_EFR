@@ -179,7 +179,7 @@ Widget buildInfoLogs({required List<String> idSystem}) {
   );
 }
 
-Widget buildInfo1Logs({required List<String> idSystem}) {
+Widget buildInfoNumsLogs({required List<String> idSystem, required int num}) {
   if (idSystem.isEmpty) {
     return const SizedBox
         .shrink(); // Cleaner and more expressive for empty cases
@@ -203,7 +203,7 @@ Widget buildInfo1Logs({required List<String> idSystem}) {
 
       final data = snapshot.data!;
       // Limit display to first 5 logs
-      final displayData = data.take(1).toList();
+      final displayData = data.take(num).toList();
 
       return Container(
         padding: const EdgeInsets.all(16),

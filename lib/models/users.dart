@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:iot_app/constants/properties.dart';
 
 class Users {
@@ -6,7 +8,7 @@ class Users {
   final String address;
   final String password;
   final String userID;
-  final String image;
+  String image;
   final Map<String, dynamic> systems;
 
   // Constructor cho việc đăng nhập thành công
@@ -74,6 +76,11 @@ class Users {
     };
   }
 
+  // update image path
+  void updateImg(String newPath) {
+    image = newPath;
+  }
+
   // Phương thức set cho username
   Users updateUser(String newUsername, String newAddress, String newImage) {
     return Users(
@@ -91,6 +98,7 @@ class Users {
   List<String> getSystemIDs() {
     return systems.keys.toList();
   }
+
   Map<String, dynamic> getSystems() {
     return systems;
   }

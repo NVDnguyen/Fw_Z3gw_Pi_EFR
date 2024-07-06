@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/constants/properties.dart';
 import 'package:iot_app/models/devices.dart';
-import 'package:iot_app/screen/profile.dart';
 import 'package:iot_app/screen/wellcome.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
 import 'package:iot_app/utils/qr_view.dart';
@@ -15,6 +14,7 @@ import 'package:iot_app/models/users.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/widgets/Dashboard/news_stream.dart';
 import 'package:iot_app/widgets/Notice/notice_snackbar.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            buildInfo1Logs(idSystem: listIdSys),
+            buildInfoNumsLogs(idSystem: listIdSys, num: 5),
           ],
         ),
       ),
@@ -267,10 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       //       builder: (context) => const ProfileScreen()),
                       // );
                     },
-                    child: CircleAvatar(
-                      backgroundImage: FileImage(File(user
-                          .image)), // Replace with the actual URL or asset image
-                    ),
+                    child:
+                        CircleAvatar(backgroundImage: NetworkImage(user.image)),
                   ),
                 ),
               ],
@@ -420,7 +418,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: Icon(Icons.phone),
                 title: Text('Add Phone Number'),
                 onTap: () {
-                  _showUpdateDialog2(idSystem);
+                  _showUpdateDialogDetail(idSystem);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.share_outlined),
+                title: Text('Share with QR code'),
+                onTap: () {
+                  _shareSystemQR(context, idSystem);
                 },
               ),
               ListTile(
@@ -599,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showUpdateDialog2(String idSystem) {
+  void _showUpdateDialogDetail(String idSystem) {
     TextEditingController phoneNumberController = TextEditingController();
     String? _selectedValue;
     List<String> _dropdownItems = ['1', '2', '3', '4'];
@@ -763,6 +768,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pop();
               },
               child: const Text('DELETE'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _shareSystemQR(BuildContext context, String idSystem) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('QR Code for System: $idSystem'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(
+                width: 200.0,
+                height: 200.0,
+                child: QrImageView(
+                  data: idSystem,
+                  version: QrVersions.auto,
+                  size: 200.0,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
