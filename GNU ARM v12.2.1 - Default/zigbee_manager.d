@@ -220,6 +220,17 @@ zigbee_manager.o: ../zigbee_manager.c \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\util\serial\sl_zigbee_command_interpreter.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\plugin\network-steering\network-steering.h \
  C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/network-steering-config.h \
+ c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\network-formation.h \
+ ../app.h c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h \
  ../sensor_data.h \
  c:\gecko_sdk_\gecko_sdk\app\bluetooth\common\sensor_rht\sl_sensor_rht.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
@@ -232,17 +243,7 @@ zigbee_manager.o: ../zigbee_manager.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h \
- c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h \
- c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
- c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
- c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
- c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\include\af.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\platform-header.h:
@@ -464,6 +465,18 @@ c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\util\client-api.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\util\serial\sl_zigbee_command_interpreter.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\plugin\network-steering\network-steering.h:
 C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/network-steering-config.h:
+c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\network-formation.h:
+../app.h:
+c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
+c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h:
 ../sensor_data.h:
 c:\gecko_sdk_\gecko_sdk\app\bluetooth\common\sensor_rht\sl_sensor_rht.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
@@ -478,13 +491,3 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h:
-c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h:
-c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
-c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
-c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
-c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
-c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h:

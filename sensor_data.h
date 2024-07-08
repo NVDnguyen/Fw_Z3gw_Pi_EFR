@@ -17,7 +17,7 @@ typedef struct {
   uint8_t fire;
   uint8_t temperature;
   uint8_t humidity;
-  uint8_t smoke;
+  float smoke;
 } SensorData;
 
 typedef struct {
@@ -26,9 +26,9 @@ typedef struct {
 } smoke_adc_pin;
 
 
-void init_read_sensor(smoke_adc_pin *smoke_pin);
+void init_read_sensor();
 void get_value_sensor(SensorData *data);
 uint8_t convert_adc_to_percentage (uint16_t raw_value);
-
+void process_risk_level(SensorData *data);
 
 #endif // SENSOR_DATA_H

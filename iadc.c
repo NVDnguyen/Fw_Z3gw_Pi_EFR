@@ -2,13 +2,13 @@
 #include <stddef.h>  // Include for NULL
 #include <stdint.h>  // Include for uint64_t
 
-static uint8_t num_current_input = 0;  // Use static instead of STATIC
-volatile uint16_t scan_result[NUM_INPUTS];
-volatile uint8_t scan_flag = 0;
-IADC_ScanTable_t init_scan_table = IADC_SCANTABLE_DEFAULT;  // Scan Table
+static uint8_t num_current_input = 0;  // Counter for current input channels
+volatile uint16_t scan_result[NUM_INPUTS];  // Array to store scan results
+volatile uint8_t scan_flag = 0;  // Flag to indicate scan completion
+IADC_ScanTable_t init_scan_table = IADC_SCANTABLE_DEFAULT;  // Default scan table
 
 // Dummy implementation of supervisor_ticks_ms64
-// You should replace this with your actual implementation
+// This function should return the current system tick in milliseconds
 uint64_t supervisor_ticks_ms64(void) {
     // This is a placeholder function.
     // Replace this with a function that returns the current system tick in milliseconds.
@@ -157,6 +157,32 @@ uint16_t get_value_ADC(analogio_analogin_obj_t *self) {
     return ret;
 }
 
-float common_hal_analogio_analogin_get_reference_voltage(analogio_analogin_obj_t *self) {
-    return 3.3f;
+float get_voltage_ADC(analogio_analogin_obj_t *self) {
+    if (self == NULL) {
+        return -1.0; // Return -1.0 if the object is NULL
+    }
+
+    // Start the ADC scan
+    IADC_command(IADC0, iadcCmdStartScan);
+
+    uint64_t start_ticks = supervisor_ticks_ms64();
+    uint64_t current_ticks = start_ticks;
+
+    while (current_ticks - start_ticks <= 1000) { // Timeout after 1000 ms
+        current_ticks = supervisor_ticks_ms64();
+        if (scan_flag == 1) {
+            scan_flag = 0;
+            break;
+        }
+    }
+
+    if (current_ticks - start_ticks > 1000) {
+        return -1.0; // Or an appropriate error code
+    }
+
+    uint16_t adc_value = scan_result[self->id];
+    scan_result[self->id] = 0; // Reset the result after reading
+
+    // Convert ADC value to voltage
+    return (float)adc_value / ADC_RESOLUTION * VREF;
 }

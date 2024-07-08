@@ -2,21 +2,15 @@
 #include "app_log.h"
 #include "sl_simple_button_instances.h"
 #include "sl_simple_button.h"
+#include "sensor_data.h"
 
-// Định nghĩa biến sensor
-SensorData sensor;
-
+static SensorData sensor;
 static volatile bool app_btn1_pressed = false;
 static bool button_state;
 
 void app_init(void) {
-  // Khởi tạo chân cảm biến
-  smoke_adc_pin smoke_pin = {.port = gpioPortA, .number = 7};
-  init_read_sensor(&smoke_pin);
+  init_read_sensor();
 
-//  // Khởi tạo chân Buzzer
-  GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
-  button_state = false;
 }
 
 void app_process_action(void) {
@@ -36,7 +30,7 @@ void app_process_action(void) {
   }else{
       GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
   }
-//   app_log_warning("Temp: %d | Hum: %d | Smoke: %d | Level: %d | Alarm : %d\n", sensor.temperature, sensor.humidity, sensor.smoke, sensor.fire, button_state);
+  //app_log_warning("Temp: %d | Hum: %d | Smoke: %d | Level: %d | Alarm : %d\n", sensor.temperature, sensor.humidity, sensor.smoke, sensor.fire, button_state);
 }
 void sl_button_on_change (const sl_button_t *handle)
 {
@@ -52,4 +46,7 @@ void sl_button_on_change (const sl_button_t *handle)
         printf("released");
     }
   }
+}
+SensorData get_sensor_processed(){
+  return sensor;
 }
