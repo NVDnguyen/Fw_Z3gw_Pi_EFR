@@ -7,7 +7,7 @@
     - Connect the USB port with efr32mg24 (bootloader, uart-ncp-xmodem).
     - Switch to the ```Pi``` branch and then download them on the Raspberry Pi.
       ```
-      git checkout Pi
+      git checkout Pi_4
       ```
     - Run the Python file.
     
