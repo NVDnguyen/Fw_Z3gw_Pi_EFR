@@ -1,52 +1,39 @@
 #include "app.h"
 #include "app_log.h"
-#include "sl_simple_button_instances.h"
-#include "sl_simple_button.h"
+//#include "sl_simple_button_instances.h"
+//#include "sl_simple_button.h"
 #include "sensor_data.h"
 
 static SensorData sensor;
-static volatile bool app_btn1_pressed = false;
-static bool button_state;
+#define BUZZER_PORT gpioPortD  //13
+#define BUZZER_PIN  2
+bool on = false;
 
 void app_init(void) {
   init_read_sensor();
 
+  // Initialize buzzer
+  GPIO_PinModeSet(BUZZER_PORT, BUZZER_PIN, gpioModePushPull, 0);
+
 }
 
 void app_process_action(void) {
-  // Đọc dữ liệu cảm biến
-  get_value_sensor(&sensor);
-  //sl_sleeptimer_delay_millisecond(100);
-  if (app_btn1_pressed) {
-    button_state = !button_state;
-    app_btn1_pressed=false;
-  }
-  if (button_state) {
-    sensor.fire = 3;
-  }
 
+  get_value_sensor(&sensor);
+
+  if(sensor.onAlarm == 1){
+      sensor.fire =3;
+  }
   if(sensor.fire > 1){
-      GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 1);
+      on = true;
+      GPIO_PinModeSet(BUZZER_PORT, BUZZER_PIN, gpioModePushPull, 1);
   }else{
-      GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
+      on = false;
+      GPIO_PinModeSet(BUZZER_PORT, BUZZER_PIN, gpioModePushPull, 0);
   }
-  //app_log_warning("Temp: %d | Hum: %d | Smoke: %d | Level: %d | Alarm : %d\n", sensor.temperature, sensor.humidity, sensor.smoke, sensor.fire, button_state);
+ //app_log_warning("Temp: %d | Hum: %d | Metan: %d |Co: %d | Level: %d | Button1 : %d | Reset : %d | Speak: %d\n", sensor.temperature, sensor.humidity, sensor.metan,sensor.co, sensor.fire, sensor.onAlarm,sensor.resetNetwork,on);
 }
-void sl_button_on_change (const sl_button_t *handle)
-{
-  if (sl_button_get_state (handle) == SL_SIMPLE_BUTTON_PRESSED){
-      // Button pressed.
-      if (&sl_button_btn1 == handle) {
-          app_btn1_pressed = true;
-      }
-    } // Button released.
-  else if (sl_button_get_state(handle) == SL_SIMPLE_BUTTON_RELEASED) {
-    if (&sl_button_btn1 == handle) {
-        app_btn1_pressed = false;
-        printf("released");
-    }
-  }
-}
+
 SensorData get_sensor_processed(){
   return sensor;
 }

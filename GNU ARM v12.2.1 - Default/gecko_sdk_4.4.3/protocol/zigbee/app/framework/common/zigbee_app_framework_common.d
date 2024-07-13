@@ -1,5 +1,5 @@
 gecko_sdk_4.4.3/protocol/zigbee/app/framework/common/zigbee_app_framework_common.o: \
- C:/gecko_sdk_/gecko_sdk/protocol/zigbee/app/framework/common/zigbee_app_framework_common.c \
+ ../gecko_sdk_4.4.3/protocol/zigbee/app/framework/common/zigbee_app_framework_common.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\platform-header.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h \
@@ -185,8 +185,19 @@ gecko_sdk_4.4.3/protocol/zigbee/app/framework/common/zigbee_app_framework_common
  c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manager_af_token_header.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\cortexm3/diagnostic.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember.h \
- C:/gecko_sdk_/gecko_sdk/protocol/zigbee/app/framework/common/zigbee_app_framework_common.h \
- C:/gecko_sdk_/gecko_sdk/protocol/zigbee/app/framework/common/zigbee_app_framework_callback.h \
+ c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\common\zigbee_app_framework_common.h \
+ c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\common\zigbee_app_framework_callback.h \
+ c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h \
+ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\cortexm3\diagnostic.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\plugin\debug-print\sl_zigbee_debug_print.h \
  C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_debug_print_config.h \
@@ -376,8 +387,19 @@ C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/zap-tokens.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manager_af_token_header.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\cortexm3/diagnostic.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember.h:
-C:/gecko_sdk_/gecko_sdk/protocol/zigbee/app/framework/common/zigbee_app_framework_common.h:
-C:/gecko_sdk_/gecko_sdk/protocol/zigbee/app/framework/common/zigbee_app_framework_callback.h:
+c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\common\zigbee_app_framework_common.h:
+c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\common\zigbee_app_framework_callback.h:
+c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_handles.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_iostream_init_eusart_instances.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream_uart.h:
+c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
+c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
+c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/app_log_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\cortexm3\diagnostic.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\plugin\debug-print\sl_zigbee_debug_print.h:
 C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_debug_print_config.h:

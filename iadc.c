@@ -1,6 +1,7 @@
 #include "iadc.h"
 #include <stddef.h>  // Include for NULL
 #include <stdint.h>  // Include for uint64_t
+#include "em_iadc.h"
 
 static uint8_t num_current_input = 0;  // Counter for current input channels
 volatile uint16_t scan_result[NUM_INPUTS];  // Array to store scan results
@@ -179,7 +180,9 @@ float get_voltage_ADC(analogio_analogin_obj_t *self) {
     if (current_ticks - start_ticks > 1000) {
         return -1.0; // Or an appropriate error code
     }
-
+//    while (IADC0->STATUS & IADC_STATUS_SINGLEFIFODV) {
+//                // Wait here
+//    }
     uint16_t adc_value = scan_result[self->id];
     scan_result[self->id] = 0; // Reset the result after reading
 

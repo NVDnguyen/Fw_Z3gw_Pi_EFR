@@ -68,22 +68,6 @@ int main(void)
   return 0;
 }
 /***********************************Functuion_Process****************************************/
-//void sl_button_on_change (const sl_button_t *handle)
-//{
-//  if (sl_button_get_state (handle) == SL_SIMPLE_BUTTON_PRESSED){
-//      // Button pressed.
-//      if (&sl_button_btn1 == handle) {
-//          //app_btn1_pressed = true;
-//          printf("pressed");
-//      }
-//    } // Button released.
-//  else if (sl_button_get_state(handle) == SL_SIMPLE_BUTTON_RELEASED) {
-//    if (&sl_button_btn1 == handle) {
-//        //app_btn1_pressed = false;
-//        printf("released");
-//    }
-//  }
-//}
 
 
 
