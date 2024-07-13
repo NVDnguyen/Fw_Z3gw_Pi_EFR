@@ -62,3 +62,37 @@ class ButtonReader(threading.Thread):
     def cleanup(self):
         """Clean up by resetting GPIO settings."""
         GPIO.cleanup()
+
+
+
+def main():
+    # Setup GPIO pin for the button
+    BUTTON_PIN = 5  # Change this to your actual GPIO pin
+
+    # Create a queue to communicate with the ButtonReader thread
+    button_queue = Queue()
+
+    # Create and start the ButtonReader thread
+    button_reader = ButtonReader(BUTTON_PIN, button_queue)
+    button_reader.start()
+
+    print("Press the button to test...")
+
+    try:
+        while True:
+            if not button_queue.empty():
+                result = button_queue.get()
+                if result == 1:
+                    print("Short press detected")
+                elif result == 2:
+                    print("Long press detected")
+            time.sleep(0.1)  # Short delay to reduce CPU usage
+    except KeyboardInterrupt:
+        print("Exiting program")
+    finally:
+        # Clean up GPIO settings
+        button_reader.cleanup()
+        GPIO.cleanup()
+
+if __name__ == "__main__":
+    main()

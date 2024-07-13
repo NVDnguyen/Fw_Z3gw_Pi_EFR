@@ -1,53 +1,73 @@
 import serial
 import time
 
-class SIMModule:
-    def __init__(self, port, baud_rate=115200):
-        self.port = port
-        self.baud_rate = baud_rate
-        self.serial = serial.Serial(port, baud_rate, timeout=1)
-        self.initialize_sim()
+port = "/dev/ttyUSB0"  # Specify your port here
+serial_conn = None  # Initialize serial_conn as None
 
-    def initialize_sim(self):
-        print("Initializing SIM module...")
-        if self.send_at_command("AT"):
-            print("SIM module is ready.")
-        else:
-            print("Failed to initialize SIM module.")
+def init_sim():
+    global serial_conn
+    try:
+        serial_conn = serial.Serial(port, 115200, timeout=1)
+    except serial.SerialException as e:
+        print(f"Error initializing serial port: {e}")
+        serial_conn = None
 
-    def send_at_command(self, command, timeout=3):
-        self.serial.write((command + "\r\n").encode())
+def send_at_command(command, timeout=3):
+    global serial_conn
+    if not serial_conn:
+        print("Serial connection not initialized")
+        return False
+    try:
+        serial_conn.write((command + "\r\n").encode())
         start_time = time.time()
         while True:
             if time.time() - start_time > timeout:
+                print("Timeout waiting for response")
                 return False
-            if self.serial.in_waiting:
-                response = self.serial.read_all().decode().strip()
+            if serial_conn.in_waiting:
+                response = serial_conn.read_all().decode('utf-8').strip()
                 print(response)
-                return True
+                return "OK" in response or "ERROR" not in response
+    except serial.SerialException as e:
+        print(f"Error sending AT command: {e}")
+        return False
 
-    def send_sms(self, number, message):
-        print("Sending SMS...")
-        self.send_at_command("AT+CMGF=1")  # Set to text mode
+def check_sim():
+    print("Checking SIM module...")
+    return send_at_command("AT")
+
+def send_sms(number, message):
+    print("Sending SMS...")
+    if send_at_command("AT+CMGF=1"):  # Set to text mode
         time.sleep(1)
-        self.send_at_command(f'AT+CMGS="{number}"')
-        time.sleep(1)
-        self.serial.write((message + "\x1A").encode())  # CTRL+Z to send
-        time.sleep(1)
-        print("SMS sent to", number)
+        if send_at_command(f'AT+CMGS="{number}"'):
+            time.sleep(1)
+            serial_conn.write((message + "\x1A").encode())  # CTRL+Z to send
+            time.sleep(3)
+            print("SMS sent to", number)
+        else:
+            print("Failed to send SMS")
+    else:
+        print("Failed to set SMS text mode")
 
-    def make_call(self, number):
-        print("Making a call...")
-        self.send_at_command(f"ATD{number};")
-        print("Dialing", number)
+def make_call(number):
+    print("Making a call...")
+    if send_at_command(f"ATD{number};"):
+        print(f"Calling {number}...")
+    else:
+        print("Failed to make call")
 
-    def demo(self):
-        # Example usage
-        if self.send_at_command("AT+CPIN?"):
-            self.send_at_command("AT+CSQ")
-            self.send_sms("0387015635", "Hello, this is a test message.")
-            self.make_call("0387015635")
+if __name__ == "__main__":
+    init_sim()
+    if serial_conn:
+        if check_sim():
+            print("SIM module is ready.")
+        else:
+            print("Failed to initialize SIM module.")
+        
+        #send_sms("0363802865", "He thong canh bao")
+        make_call("0363802865")
 
-# Example usage
-sim_module = SIMModule("/dev/ttyUSB0")  # Change the port as needed
-sim_module.demo()
+        serial_conn.close()
+    else:
+        print("Failed to initialize serial connection")
