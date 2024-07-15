@@ -18,8 +18,8 @@ typedef struct {
   uint8_t fire;
   uint8_t temperature;
   uint8_t humidity;
-  uint8_t metan;
-  uint8_t co;
+  uint8_t air;
+  uint8_t level;
   uint8_t onAlarm;
   uint8_t resetNetwork;
 } SensorData;
@@ -36,4 +36,6 @@ uint8_t convert_adc_to_percentage (uint16_t raw_value);
 void process_risk_level(SensorData *data);
 int8_t read_button_state(GPIO_Port_TypeDef port, unsigned int pin);
 void process_buttons(SensorData *data);
+uint8_t calculate_gas_concentration();
+void turn_off_reset_mode();
 #endif // SENSOR_DATA_H

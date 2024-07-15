@@ -6,33 +6,34 @@
 #define BUTTON0_PIN  3
 #define BUTTON1_PORT gpioPortB // button reset network // bt0
 #define BUTTON1_PIN  2
-
-#define TEMP_THRESHOLD_HIGH 75 // High temperature threshold in Celsius
-#define TEMP_THRESHOLD_MEDIUM 50 // Medium temperature threshold in Celsius
-#define SMOKE_THRESHOLD_HIGH 200 // High smoke threshold in ppm
-#define SMOKE_THRESHOLD_MEDIUM 100 // Medium smoke threshold in ppm
-#define CO_THRESHOLD_HIGH 150 // High CO threshold in ppm
-#define CO_THRESHOLD_MEDIUM 50 // Medium CO threshold in ppm
+#define FIRE_PORT gpioPortC  // 8
+#define FIRE_PIN  1
 
 
 
-smoke_adc_pin metan_pin = {.port = gpioPortA, .number = 7}; // mq2 // 10
-smoke_adc_pin co_pin = {.port = gpioPortC, .number = 1}; // mq7  // 8
+//#define RL 1.0 // Load resistance in kilo-ohms
+//#define RO 4.0 // Ro value in kilo-ohms (calibrated in clean air)
+//#define Vc 5.0  // Supply voltage
+//#define ADC_RESOLUTION 4095.0 // ADC resolution (12-bit ADC)
+
+smoke_adc_pin mq2_pin = {.port = gpioPortA, .number = 7}; // mq2 // 10
+//smoke_adc_pin co_pin = {.port = gpioPortC, .number = 1}; // mq7  // 8
 
 
 
 
 static analogio_analogin_obj_t metan_input;
-static analogio_analogin_obj_t co_input;
 
 uint8_t alarm_state = false;
+uint8_t reset_state = false;
+
 
 void init_read_sensor() {
     // ADC init
-    mcu_pin_obj_t pin = { .port = metan_pin.port, .number = metan_pin.number };
+    mcu_pin_obj_t pin = { .port = mq2_pin.port, .number = mq2_pin.number };
     analog_input_initialize(&metan_input, &pin);
-    mcu_pin_obj_t pin1 = { .port = co_pin.port, .number = co_pin.number };
-    analog_input_initialize(&co_input, &pin1);
+//    mcu_pin_obj_t pin1 = { .port = co_pin.port, .number = co_pin.number };
+//    analog_input_initialize(&co_input, &pin1);
 
     // Init temperature sensor
     sl_sensor_rht_init();
@@ -41,6 +42,7 @@ void init_read_sensor() {
     CMU_ClockEnable(cmuClock_GPIO, true);
     GPIO_PinModeSet(BUTTON0_PORT, BUTTON0_PIN, gpioModeInputPull, 1);
     GPIO_PinModeSet(BUTTON1_PORT, BUTTON1_PIN, gpioModeInputPull, 1);
+    GPIO_PinModeSet(FIRE_PORT, FIRE_PIN, gpioModeInputPull, 1);
 }
 
 void get_value_sensor(SensorData *data) {
@@ -53,12 +55,9 @@ void get_value_sensor(SensorData *data) {
         data->temperature = (uint8_t)(t / 1000);
     }
 
-    //
-//    uint8_t metan_vt = (uint8_t) get_voltage_ADC(&metan_input); //mq2
-//    uint8_t co_vt = (uint8_t) get_voltage_ADC(&co_input); // mq7
-//    calculate_gas_concentration(metan_vt, co_vt, &data->metan, &data->co);
-    data->co = get_voltage_ADC(&co_input);
-    data->metan = get_voltage_ADC(&metan_input);
+    data->air = get_voltage_ADC(&mq2_pin);
+    data->fire = GPIO_PinInGet(FIRE_PORT,FIRE_PIN)==1?0:1;
+
 
 
     // Process buttons
@@ -82,59 +81,38 @@ void process_buttons(SensorData *data) {
     data->onAlarm = alarm_state;
 
     if (button1_state == BUTTON_PRESSED && last_button1_state == BUTTON_RELEASED) {
-        data->resetNetwork = BUTTON_PRESSED;
-    } else {
-        data->resetNetwork = BUTTON_RELEASED;
+        reset_state = !reset_state;
     }
     last_button1_state = button1_state;
+    data->resetNetwork = reset_state;
 }
 
+void turn_off_reset_mode(){
+  reset_state = !reset_state;
+}
 
 void process_risk_level(SensorData *data) {
-//    if (data->temperature > TEMP_THRESHOLD_HIGH || data->metan > SMOKE_THRESHOLD_HIGH || data->co > CO_THRESHOLD_HIGH) {
-//        data->fire = 2; // High risk
-//    } else if ((data->temperature >= TEMP_THRESHOLD_MEDIUM && data->temperature <= TEMP_THRESHOLD_HIGH) &&
-//               (data->metan > SMOKE_THRESHOLD_MEDIUM || data->co > CO_THRESHOLD_MEDIUM)) {
-//        data->fire = 1; // Medium risk
-//    } else {
-//        data->fire = 0; // Low risk
-//    }
-   if(data->temperature > 50 || data->metan >40 || data->co > 40){
-       data->fire =3;
-   }else if(data->temperature > 50 || data->metan >30 || data->co > 20){
-       data->fire =2;
-
-   }else if(data->temperature > 40 || data->metan >22 || data->co > 22){
-       data->fire =1;
-
-   }
-   else{
-       data->fire =0;
-   }
+    if (data->fire == 1) {
+        // High risk: fire detected
+        data->level = 3;
+    } else if (data->temperature >= 60 && data->air >= 11) {
+        // High risk: no fire, very high temperature and air not good
+        data->level = 3;
+    } else if (data->air >= 25) {
+        // Medium risk: air very not good
+        data->level = 2;
+    } else if (data->temperature >= 50 && data->air >= 15) {
+        // Medium risk: no fire, high temperature and air not good
+        data->level = 2;
+    } else if (data->air >= 15) {
+        // Low risk: air not good
+        data->level = 1;
+    } else {
+        // No risk: normal conditions
+        data->level = 0;
+    }
 }
 
-void calculate_gas_concentration(uint16_t metan_adc, uint16_t co_adc, uint8_t *metan_conc, uint8_t *co_conc) {
-    float Vin = 5.0;
-    float adc_max = 4095.0; // Maximum ADC value for 12-bit ADC
-
-    // Constants for MQ-2 (Methane)
-    float a_metan = 2.0;
-    float b_metan = -2.5;
-
-    // Constants for MQ-7 (CO)
-    float a_co = 1.0;
-    float b_co = -1.5;
-
-    // Convert ADC value to voltage
-    float Vout_metan = (metan_adc / adc_max) * Vin;
-    float Vout_co = (co_adc / adc_max) * Vin;
-
-    // Calculate methane concentration
-    *metan_conc = (uint8_t)(a_metan * pow((Vout_metan / Vin), b_metan));
-
-    // Calculate CO concentration
-    *co_conc = (uint8_t)(a_co * pow((Vout_co / Vin), b_co));
-}
 int8_t read_button_state(GPIO_Port_TypeDef port, unsigned int pin) {
     // Read the actual state of the pin
     int8_t pin_state = GPIO_PinInGet(port, pin);
@@ -153,3 +131,4 @@ int8_t read_button_state(GPIO_Port_TypeDef port, unsigned int pin) {
         return -1;
     }
 }
+

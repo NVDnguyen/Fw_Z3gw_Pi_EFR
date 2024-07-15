@@ -19,60 +19,60 @@ int count =0;
 EmberEUI64 eui64;
 // Function to send a message
 void sendTestMessage(void) {
-  EmberStatus status;
-  EmberNodeId destination =  0x0000; // Node ID of Coordinator
+//  EmberStatus status;
+//  EmberNodeId destination =  0x0000; // Node ID of Coordinator
+//
+//
+//  // Node ID forever
+//  emberAfGetEui64(eui64);
+//
+//  data = get_sensor_processed();
+//  static uint8_t msg[10] ={0x00, 0x0A, 0x00};
+//  msg[1] +=1;
+//  msg[3] = 112;
+//  msg[4] = data.temperature;
+//  msg[5] = data.humidity;
+//  msg[6] = data.air;
+//  msg[7] = data.fire;
+//  msg[8] = data.level;
+//
+//  // EmberApsFrame
+//  EmberApsFrame apsFrame;
+//  apsFrame.profileId = 0x0104; // Home Automation profile ID
+//  apsFrame.sourceEndpoint = SOURCE_ENDPOINT;
+//  apsFrame.destinationEndpoint = DESTINATION_ENDPOINT;
+//  apsFrame.clusterId = 0x000F; // Basic cluster ID
+//  apsFrame.options = EMBER_AF_DEFAULT_APS_OPTIONS;
+//  apsFrame.groupId = 0;
+//  apsFrame.sequence = 0;
+//
+//  //printZigbeeInfo();
+//  // reset  network
+//  if(data.resetNetwork == 1){
+//      turn_off_reset_mode();
+//      emberLeaveNetwork();
+//      emberAfPluginNetworkSteeringStart();
+//  }
+//  // if not in network of coordinator
+//  if(emberAfGetPanId()!= 0x1345){
+//      count++;
+//  }
+//  // reconnect coordinator
+//  if(count>4) {
+//      emberAfPluginNetworkSteeringStart(); // steering again
+//      count =0;
+//  }
+//  // send msg
+//  status = emberAfSendUnicast(EMBER_OUTGOING_DIRECT, destination, &apsFrame, 10 , msg);
+//  // check send possible
+//  if (status != EMBER_SUCCESS) {
+//   emberAfCorePrintln("Error_%d: %d",count,status);
+//   count++;
+//  }
+  //app_log_warning("Temp: %d | Hum: %d | Air: %d | Fire: %d | Level: %d | Button1 : %d | Reset : %d\n", data.temperature, data.humidity, data.air, data.fire, data.level, data.onAlarm,data.resetNetwork);
 
 
-  // Node ID forever
-  emberAfGetEui64(eui64);
 
-  data = get_sensor_processed();
-  uint8_t smoke = data.metan;
-
-  static uint8_t msg[10] ={0x00, 0x0A, 0x00};
-  msg[1] +=1;
-  msg[3] = 112;
-  msg[4] = data.temperature;
-  msg[5] = data.humidity;
-  msg[6] = smoke;
-  msg[7] = data.co;
-  msg[8] = data.fire;
-
-  // EmberApsFrame
-  EmberApsFrame apsFrame;
-  apsFrame.profileId = 0x0104; // Home Automation profile ID
-  apsFrame.sourceEndpoint = SOURCE_ENDPOINT;
-  apsFrame.destinationEndpoint = DESTINATION_ENDPOINT;
-  apsFrame.clusterId = 0x000F; // Basic cluster ID
-  apsFrame.options = EMBER_AF_DEFAULT_APS_OPTIONS;
-  apsFrame.groupId = 0;
-  apsFrame.sequence = 0;
-
-  //printZigbeeInfo();
-  // reset  network
-  if(data.resetNetwork == 1){
-      emberLeaveNetwork();
-      emberAfPluginNetworkSteeringStart();
-  }
-  // if not in network of coordinator
-  if(emberAfGetPanId()!= 0x1345){
-      count++;
-  }
-  // reconnect coordinator
-  if(count>4) {
-      emberAfPluginNetworkSteeringStart(); // steering again
-      count =0;
-  }
-  // send msg
-  status = emberAfSendUnicast(EMBER_OUTGOING_DIRECT, destination, &apsFrame, 10 , msg);
-  // check send possible
-  if (status != EMBER_SUCCESS) {
-   emberAfCorePrintln("Error_%d: %d",count,status);
-   count++;
-  }
-
-
-  app_log_warning("Temp: %d | Hum: %d | Metan: %d |Co: %d | Level: %d | Button1 : %d | Reset : %d\n", data.temperature, data.humidity, data.metan,data.co, data.fire, data.onAlarm,data.resetNetwork);
 
 }
 
