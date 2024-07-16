@@ -55,7 +55,7 @@ void get_value_sensor(SensorData *data) {
         data->temperature = (uint8_t)(t / 1000);
     }
 
-    data->air = get_voltage_ADC(&mq2_pin);
+    data->air = get_voltage_ADC(&mq2_pin) / 5.2;
     data->fire = GPIO_PinInGet(FIRE_PORT,FIRE_PIN)==1?0:1;
 
 
@@ -92,26 +92,43 @@ void turn_off_reset_mode(){
 }
 
 void process_risk_level(SensorData *data) {
-    if (data->fire == 1) {
-        // High risk: fire detected
-        data->level = 3;
-    } else if (data->temperature >= 60 && data->air >= 11) {
-        // High risk: no fire, very high temperature and air not good
-        data->level = 3;
-    } else if (data->air >= 25) {
-        // Medium risk: air very not good
-        data->level = 2;
-    } else if (data->temperature >= 50 && data->air >= 15) {
-        // Medium risk: no fire, high temperature and air not good
-        data->level = 2;
-    } else if (data->air >= 15) {
-        // Low risk: air not good
-        data->level = 1;
-    } else {
-        // No risk: normal conditions
-        data->level = 0;
+    // Detect sudden change in temperature
+    static int previous_temperature = 0;  // Store previous temperature value
+    bool temperature_change = false;
+
+    if (abs(data->temperature - previous_temperature) >= 10) {
+        temperature_change = true;
     }
+    previous_temperature = data->temperature;
+    // Default: No risk
+    data->level = 0;
+    // Evaluate risk based on sensor data
+    if (data->fire == 1) {
+        // Real fire detected
+        if (temperature_change || data->air >= 35) {
+            // High risk
+            data->level = 3;
+        } else {
+            // Potential false alarm due to infrared light influence
+            data->level = 0;
+        }
+    } else {
+        // No fire detected
+        if (data->air >= 57) {
+            // Medium risk due to high gas level
+            data->level = 2;
+        } else if (temperature_change && data->air >= 35) {
+            // Medium risk due to temperature change and high gas level
+            data->level = 2;
+        } else if (data->air >= 35) {
+            // Low risk due to medium gas level
+            data->level = 1;
+        }
+    }
+
 }
+
+
 
 int8_t read_button_state(GPIO_Port_TypeDef port, unsigned int pin) {
     // Read the actual state of the pin

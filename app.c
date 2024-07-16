@@ -1,6 +1,7 @@
 #include "app.h"
 #include "app_log.h"
 #include "sensor_data.h"
+#include "zigbee_manager.h"
 
 static SensorData sensor;
 #define BUZZER_PORT gpioPortD  //13
@@ -20,6 +21,9 @@ void app_process_action(void) {
 
   get_value_sensor(&sensor);
 
+  if(get_status_network_alarm()){
+     sensor.level =3;
+  }
 
   if(sensor.onAlarm == 1){
       sensor.level =3;
@@ -31,7 +35,8 @@ void app_process_action(void) {
       on = false;
       GPIO_PinModeSet(BUZZER_PORT, BUZZER_PIN, gpioModePushPull, 0);
   }
-  app_log_warning("Temp: %d | Hum: %d | Air: %d | Fire: %d | Level: %d | Button1 : %d | Reset : %d\n", sensor.temperature, sensor.humidity, sensor.air, sensor.fire, sensor.level, sensor.onAlarm,sensor.resetNetwork);
+
+  //app_log_warning("Temp: %d | Hum: %d | Air: %d | Fire: %d | Level: %d | Button1 : %d | Reset : %d\n", sensor.temperature, sensor.humidity, sensor.air, sensor.fire, sensor.level, sensor.onAlarm,sensor.resetNetwork);
 
 
 }
@@ -39,3 +44,4 @@ void app_process_action(void) {
 SensorData get_sensor_processed(){
   return sensor;
 }
+

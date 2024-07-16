@@ -92,7 +92,8 @@ app.o: ../app.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h \
+ ../zigbee_manager.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 ../app.h:
 c:\gecko_sdk_\gecko_sdk\app\common\util\app_log\app_log.h:
@@ -189,3 +190,4 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h:
+../zigbee_manager.h:

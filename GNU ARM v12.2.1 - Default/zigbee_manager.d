@@ -243,7 +243,8 @@ zigbee_manager.o: ../zigbee_manager.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
- c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h
+ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h \
+ ../zigbee_manager.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\include\af.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\legacy_hal\inc\platform-header.h:
@@ -491,3 +492,4 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h:
+../zigbee_manager.h:
