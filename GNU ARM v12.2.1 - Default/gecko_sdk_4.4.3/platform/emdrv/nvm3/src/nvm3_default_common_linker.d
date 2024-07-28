@@ -54,7 +54,7 @@ gecko_sdk_4.4.3/platform/emdrv/nvm3/src/nvm3_default_common_linker.o: \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_hal.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
@@ -63,7 +63,7 @@ gecko_sdk_4.4.3/platform/emdrv/nvm3/src/nvm3_default_common_linker.o: \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_default.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_hal_flash.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/nvm3_default_config.h
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/nvm3_default_config.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\em_device.h:
@@ -118,7 +118,7 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_hal.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
@@ -127,4 +127,4 @@ c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_default.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\nvm3\inc\nvm3_hal_flash.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/nvm3_default_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/nvm3_default_config.h:

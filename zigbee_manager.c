@@ -24,7 +24,7 @@ void sendTestMessage(void) {
   data = get_sensor_processed();
   static uint8_t msg[10] ={0x00, 0x0A, 0x00};
   msg[1] +=1;
-  msg[3] = 112;
+  msg[3] = 113;
   msg[4] = data.temperature;
   msg[5] = data.humidity;
   msg[6] = data.air;
@@ -49,8 +49,9 @@ void sendTestMessage(void) {
       emberAfPluginNetworkSteeringStart();
   }
   // if not in network of coordinator
-  if(emberAfGetPanId()!= 0x1345){
+  if(emberAfGetPanId()!= 0xBF94){
       count++;
+      emberAfCorePrintln("%u", emberAfGetPanId());
   }
   // reconnect coordinator
   if(count>4) {
@@ -72,10 +73,11 @@ void sendTestMessage(void) {
 //  app_log_warning("Temp: %d | Hum: %d | Air: %d | Fire: %d | Level: %d | Button1 : %d | Reset : %d\n", data.temperature, data.humidity, data.air, data.fire, data.level, data.onAlarm,data.resetNetwork);
 
 }
-void send_all_in_pan(){
-    static uint8_t msg[5] = {0x00, 0x0A, 0x00, 123, 1};  // Message content
-    broadcastMessage(&msg,sizeof(msg));
+void send_all_in_pan(uint8_t level) {
+    uint8_t msg[2] = {0x00, level};  // Message containing level
 
+    // Send broadcast message containing level to all nodes
+    broadcastMessage(msg, sizeof(msg));
 }
 void broadcastMessage(uint8_t *message, uint8_t length) {
     EmberStatus status;
@@ -92,63 +94,43 @@ void broadcastMessage(uint8_t *message, uint8_t length) {
     // Allocate and fill message buffer
     messageBuffer = emberFillLinkedBuffers(message, length);
     if (messageBuffer == EMBER_NULL_MESSAGE_BUFFER) {
-        // Handle error: buffer alloc ation failed
         emberAfCorePrintln("Handle error: buffer allocation failed");
         return;
     }
 
     // Send broadcast message
-    status = emberSendBroadcast(EMBER_BROADCAST_ADDRESS, &apsFrame, 0, messageBuffer);
-    if (status != EMBER_SUCCESS) {
-        // Handle error: sending failed
-        emberAfCorePrintln("Handle error: sending failed");
-    }
-}
-
-void emberAfIncomingMessageCallback(EmberApsFrame *apsFrame,
-                                    uint8_t messageLength,
-                                    uint8_t *message)
-{
-    // Check if apsFrame and message are valid
-    if (apsFrame == NULL || message == NULL) {
-        emberAfCorePrintln("Invalid apsFrame or message");
-        return;
-    }
-
-    // Check the cluster ID and endpoint to determine the type of message
-    if (apsFrame->profileId == 0x0104 &&  // Home Automation profile ID
-        apsFrame->clusterId == 0x000F &&  // Basic cluster ID
-        apsFrame->destinationEndpoint == DESTINATION_ENDPOINT) {
-
-        // Check the length of the message
-        if (messageLength == 5) {
-            uint8_t byte1 = message[0];
-            uint8_t byte2 = message[1];
-            uint8_t byte3 = message[2];
-            uint8_t byte4 = message[3];
-            uint8_t byte5 = message[4];
-
-            // Process the bytes of the message as required
-            emberAfCorePrintln("Received message:");
-            emberAfCorePrintln("Byte 1: %d", byte1);
-            emberAfCorePrintln("Byte 2: %d", byte2);
-            emberAfCorePrintln("Byte 3: %d", byte3);
-            emberAfCorePrintln("Byte 4: %d", byte4);
-            emberAfCorePrintln("Byte 5: %d", byte5);
-            //
-            if(byte3 == 123){
-                node_alarm = byte4;
-            }
-
-            // Perform actions based on the received data
-            // For example: update status, send a response, etc.
-        } else {
-            emberAfCorePrintln("Unexpected message length: %d", messageLength);
+    int retryCount = 0;
+    int MAX_RETRIES = 5;
+    do {
+        // Send broadcast message
+        status = emberSendBroadcast(/*EMBER_BROADCAST_ADDRESS*/EMBER_RX_ON_WHEN_IDLE_BROADCAST_ADDRESS, &apsFrame, 0, messageBuffer);
+        if (status == EMBER_NETWORK_BUSY) {
+            emberAfCorePrintln("Network is busy, retrying...");
+            retryCount++;
+        } else if (status != EMBER_SUCCESS) {
+            emberAfCorePrintln("Handle error: sending failed, status: 0x%X", status);
+            break;
         }
-    } else {
-        emberAfCorePrintln("Unsupported profile ID or cluster ID or endpoint");
+    } while (status == EMBER_NETWORK_BUSY && retryCount < MAX_RETRIES);
+}
+
+void emberAfIncomingMessageCallback(EmberIncomingMessageType type, EmberApsFrame *apsFrame, EmberMessageBuffer message) {
+    uint8_t messageLength = emberMessageBufferLength(message);
+    uint8_t messageContent[messageLength];
+    emberCopyFromLinkedBuffers(message, 0, messageContent, messageLength);
+
+    if (apsFrame->profileId == 0x0000 && apsFrame->clusterId == 0x0000 && apsFrame->destinationEndpoint == 0xFF) {
+        if (messageLength == 2) {
+            uint8_t received_level = messageContent[1];
+            if (received_level >= 0 && received_level <= 3) {
+                node_alarm = received_level;
+                emberAfCorePrintln("alarm arive");
+            }
+        }
     }
 }
+
+
 int get_status_network_alarm(){
   return node_alarm;
 }

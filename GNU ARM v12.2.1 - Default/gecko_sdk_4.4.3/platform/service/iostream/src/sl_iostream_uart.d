@@ -1,7 +1,7 @@
 gecko_sdk_4.4.3/platform/service/iostream/src/sl_iostream_uart.o: \
  C:/gecko_sdk_/gecko_sdk/platform/service/iostream/src/sl_iostream_uart.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h \
@@ -62,9 +62,9 @@ gecko_sdk_4.4.3/platform/service/iostream/src/sl_iostream_uart.o: \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h \
  c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/dmadrv_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_power_manager_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_power_manager_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sl_sleeptimer.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h \
@@ -76,13 +76,13 @@ gecko_sdk_4.4.3/platform/service/iostream/src/sl_iostream_uart.o: \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_string.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h:
@@ -143,9 +143,9 @@ c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\dmadrv\inc\dmadrv.h:
 c:\gecko_sdk_\gecko_sdk\platform\emdrv\common\inc\ecode.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_ldma.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/dmadrv_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/dmadrv_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_power_manager_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_power_manager_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sl_sleeptimer.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
@@ -157,7 +157,7 @@ c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_atomic.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_string.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h:

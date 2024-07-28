@@ -1,7 +1,7 @@
 gecko_sdk_4.4.3/platform/radio/rail_lib/plugin/rail_util_built_in_phys/sl_rail_phy_overrides.o: \
  C:/gecko_sdk_/gecko_sdk/platform/radio/rail_lib/plugin/rail_util_built_in_phys/sl_rail_phy_overrides.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_device_init_hfxo_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_device_init_hfxo_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ble_config_38m4hz.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_types.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\chip\efr32\efr32xg2x\rail_chip_specific.h \
@@ -58,7 +58,7 @@ gecko_sdk_4.4.3/platform/radio/rail_lib/plugin/rail_util_built_in_phys/sl_rail_p
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ieee802154_config_38m4hz.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_rfsense_ook_config_38m4hz.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ble_config_39mhz.h \
@@ -68,7 +68,7 @@ gecko_sdk_4.4.3/platform/radio/rail_lib/plugin/rail_util_built_in_phys/sl_rail_p
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ieee802154_config_40mhz.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_rfsense_ook_config_40mhz.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_device_init_hfxo_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_device_init_hfxo_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ble_config_38m4hz.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_types.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\chip\efr32\efr32xg2x\rail_chip_specific.h:
@@ -125,7 +125,7 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ieee802154_config_38m4hz.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_rfsense_ook_config_38m4hz.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\rail_util_built_in_phys\efr32xg24\sl_rail_ble_config_39mhz.h:

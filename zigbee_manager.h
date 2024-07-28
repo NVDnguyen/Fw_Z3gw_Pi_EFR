@@ -10,7 +10,7 @@
 
 
 void sendTestMessage(void);
-void send_all_in_pan();
+void send_all_in_pan(uint8_t level);
 
 int get_status_network_alarm();
 void emberAfMainInitCallback(void) ;

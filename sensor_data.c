@@ -10,6 +10,14 @@
 #define FIRE_PIN  1
 
 
+#define MEDIUM_AIR 20
+#define HIGH_AIR 40
+
+
+#define MEDIUMTEMP
+#define HIGH_TEMP
+
+
 
 //#define RL 1.0 // Load resistance in kilo-ohms
 //#define RO 4.0 // Ro value in kilo-ohms (calibrated in clean air)
@@ -55,7 +63,7 @@ void get_value_sensor(SensorData *data) {
         data->temperature = (uint8_t)(t / 1000);
     }
 
-    data->air = get_voltage_ADC(&mq2_pin) / 5.2;
+    data->air = get_voltage_ADC(&mq2_pin);
     data->fire = GPIO_PinInGet(FIRE_PORT,FIRE_PIN)==1?0:1;
 
 
@@ -96,7 +104,7 @@ void process_risk_level(SensorData *data) {
     static int previous_temperature = 0;  // Store previous temperature value
     bool temperature_change = false;
 
-    if (abs(data->temperature - previous_temperature) >= 10) {
+    if (abs(data->temperature - previous_temperature) >= 5) {
         temperature_change = true;
     }
     previous_temperature = data->temperature;
@@ -105,7 +113,7 @@ void process_risk_level(SensorData *data) {
     // Evaluate risk based on sensor data
     if (data->fire == 1) {
         // Real fire detected
-        if (temperature_change || data->air >= 35) {
+        if (temperature_change || data->air >= MEDIUM_AIR) {
             // High risk
             data->level = 3;
         } else {
@@ -114,13 +122,13 @@ void process_risk_level(SensorData *data) {
         }
     } else {
         // No fire detected
-        if (data->air >= 57) {
+        if (data->air >= HIGH_AIR) {
             // Medium risk due to high gas level
             data->level = 2;
         } else if (temperature_change && data->air >= 35) {
             // Medium risk due to temperature change and high gas level
             data->level = 2;
-        } else if (data->air >= 35) {
+        } else if (data->air >= MEDIUM_AIR) {
             // Low risk due to medium gas level
             data->level = 1;
         }

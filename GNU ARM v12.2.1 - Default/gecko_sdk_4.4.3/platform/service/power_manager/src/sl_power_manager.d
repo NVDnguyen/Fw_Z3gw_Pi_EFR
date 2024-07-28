@@ -2,7 +2,7 @@ gecko_sdk_4.4.3/platform/service/power_manager/src/sl_power_manager.o: \
  C:/gecko_sdk_/gecko_sdk/platform/service/power_manager/src/sl_power_manager.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_power_manager_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_power_manager_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sl_sleeptimer.h \
@@ -13,8 +13,8 @@ gecko_sdk_4.4.3/platform/service/power_manager/src/sl_power_manager.o: \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  C:/gecko_sdk_/gecko_sdk/platform/service/power_manager/src/sli_power_manager_private.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sli_power_manager.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sli_sleeptimer.h \
@@ -69,7 +69,7 @@ gecko_sdk_4.4.3/platform/service/power_manager/src/sl_power_manager.o: \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_sleeptimer_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_sleeptimer_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_atomic.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_emu.h \
@@ -78,7 +78,7 @@ gecko_sdk_4.4.3/platform/service/power_manager/src/sl_power_manager.o: \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_power_manager_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_power_manager_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sl_sleeptimer.h:
@@ -89,8 +89,8 @@ c:\gecko_sdk_\gecko_sdk\platform\cmsis\core\include\cmsis_gcc.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 C:/gecko_sdk_/gecko_sdk/platform/service/power_manager/src/sli_power_manager_private.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sli_power_manager.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\power_manager\inc\sl_power_manager.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\sleeptimer\inc\sli_sleeptimer.h:
@@ -145,7 +145,7 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_sleeptimer_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_sleeptimer_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_atomic.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_emu.h:

@@ -57,7 +57,7 @@ gecko_sdk_4.4.3/platform/radio/rail_lib/plugin/coexistence/protocol/ieee802154_u
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_assert_error_codes.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\coexistence\protocol\ieee802154_uc\coexistence-802154.h \
@@ -122,7 +122,7 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_assert_error_codes.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\plugin\coexistence\protocol\ieee802154_uc\coexistence-802154.h:

@@ -1,6 +1,6 @@
 # Silicon Labs Project Configuration Tools: slcp, v0, Component selection file.
-project_name: Z3Light
-label: Z3Light
+project_name: FwTech
+label: FwTech
 author: Silicon Laboratories, Inc.
 description: This is a Zigbee 3.0 light application using NVM3 as the persistent storage.
 category: Zigbee Application

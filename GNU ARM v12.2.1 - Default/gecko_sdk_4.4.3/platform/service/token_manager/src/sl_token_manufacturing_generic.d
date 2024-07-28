@@ -56,8 +56,8 @@ gecko_sdk_4.4.3/platform/service/token_manager/src/sl_token_manufacturing_generi
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_token_manager_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_token_manager_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manufacturing_series_2.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manufacturing_generic.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
@@ -116,7 +116,7 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_token_manager_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_token_manager_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manufacturing_series_2.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\token_manager\inc\sl_token_manufacturing_generic.h:

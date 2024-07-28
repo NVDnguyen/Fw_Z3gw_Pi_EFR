@@ -3,7 +3,7 @@ gecko_sdk_4.4.3/platform/service/device_init/src/sl_device_init_hfxo_s2.o: \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\device_init\inc\sl_device_init_hfxo.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_device_init_hfxo_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_device_init_hfxo_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\em_device.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24b310f1536im48.h \
@@ -57,14 +57,14 @@ gecko_sdk_4.4.3/platform/service/device_init/src/sl_device_init_hfxo_s2.o: \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h \
@@ -72,7 +72,7 @@ gecko_sdk_4.4.3/platform/service/device_init/src/sl_device_init_hfxo_s2.o: \
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\device_init\inc\sl_device_init_hfxo.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_device_init_hfxo_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_device_init_hfxo_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\em_device.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24b310f1536im48.h:
@@ -126,14 +126,14 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h:

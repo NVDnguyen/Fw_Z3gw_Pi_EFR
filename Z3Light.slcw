@@ -1,0 +1,6 @@
+---
+label: "Z3Light"
+project:
+- id: "main"
+  path: "FwTech.slcp"
+  output: "."

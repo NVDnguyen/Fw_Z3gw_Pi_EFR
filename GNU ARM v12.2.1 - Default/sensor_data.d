@@ -1,10 +1,10 @@
 sensor_data.o: ../sensor_data.c \
  c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h \
  ../sensor_data.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli_types.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_cli_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_cli_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h \
@@ -71,7 +71,7 @@ sensor_data.o: ../sensor_data.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  ../iadc.h c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_iadc.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_system.h \
@@ -81,10 +81,10 @@ sensor_data.o: ../sensor_data.c \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\sli_em_cmu.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 ../sensor_data.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\cli\inc\sl_cli_types.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_cli_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_cli_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_status.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_slist.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\iostream\inc\sl_iostream.h:
@@ -151,7 +151,7 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 ../iadc.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_iadc.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:

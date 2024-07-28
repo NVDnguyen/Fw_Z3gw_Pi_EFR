@@ -55,22 +55,22 @@ gecko_sdk_4.4.3/protocol/zigbee/stack/security/cbke-crypto-engine-dsa-verify-stu
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember-types.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\config\ember-configuration-defaults.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\util\config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/zap-config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/zap-config.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_endianness.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/zigbee_device_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/zigbee_device_config.h \
  c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\security\security-config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_green_power_config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_source_route_config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_pro_stack_config.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_light_link_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_green_power_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_source_route_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_pro_stack_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_light_link_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\protocol\ieee802154\rail_ieee802154.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_types.h \
  c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\chip\efr32\efr32xg2x\rail_chip_specific.h \
@@ -139,22 +139,22 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\include\ember-types.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\stack\config\ember-configuration-defaults.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\util\config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/zap-config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/zap-config.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_endianness.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/zigbee_device_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/zigbee_device_config.h:
 c:\gecko_sdk_\gecko_sdk\protocol\zigbee\app\framework\security\security-config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_green_power_config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_source_route_config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_pro_stack_config.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_zigbee_light_link_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_green_power_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_source_route_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_pro_stack_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_zigbee_light_link_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\protocol\ieee802154\rail_ieee802154.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\common\rail_types.h:
 c:\gecko_sdk_\gecko_sdk\platform\radio\rail_lib\chip\efr32\efr32xg2x\rail_chip_specific.h:

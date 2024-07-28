@@ -54,14 +54,14 @@ gecko_sdk_4.4.3/hardware/driver/mx25_flash_shutdown/src/sl_mx25_flash_shutdown_u
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h \
  c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h \
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h \
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
  c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h \
@@ -71,7 +71,7 @@ gecko_sdk_4.4.3/hardware/driver/mx25_flash_shutdown/src/sl_mx25_flash_shutdown_u
  c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h \
  c:\gecko_sdk_\gecko_sdk\platform\service\udelay\inc\sl_udelay.h \
  c:\gecko_sdk_\gecko_sdk\hardware\driver\mx25_flash_shutdown\inc\sl_mx25_flash_shutdown_usart\sl_mx25_flash_shutdown.h \
- C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_mx25_flash_shutdown_usart_config.h
+ C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_mx25_flash_shutdown_usart_config.h
 c:\gecko_sdk_\gecko_sdk\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\em_device.h:
@@ -126,14 +126,14 @@ c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_prs_signals.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_dma_descriptor.h:
 c:\gecko_sdk_\gecko_sdk\platform\device\siliconlabs\efr32mg24\include\efr32mg24_ldmaxbar_defines.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\autogen/sl_component_catalog.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\autogen/sl_component_catalog.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_bus.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_core_generic.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_common.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_assert.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/emlib_core_debug_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/emlib_core_debug_config.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_cmu_compat.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
 c:\gecko_sdk_\gecko_sdk\platform\common\inc\sl_enum.h:
@@ -143,4 +143,4 @@ c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_usart.h:
 c:\gecko_sdk_\gecko_sdk\platform\emlib\inc\em_gpio.h:
 c:\gecko_sdk_\gecko_sdk\platform\service\udelay\inc\sl_udelay.h:
 c:\gecko_sdk_\gecko_sdk\hardware\driver\mx25_flash_shutdown\inc\sl_mx25_flash_shutdown_usart\sl_mx25_flash_shutdown.h:
-C:\Users\nvd\SimplicityStudio\v5_workspace\Z3Light\config/sl_mx25_flash_shutdown_usart_config.h:
+C:\Users\nvd\SimplicityStudio\v5_workspace\FwTech\config/sl_mx25_flash_shutdown_usart_config.h:
