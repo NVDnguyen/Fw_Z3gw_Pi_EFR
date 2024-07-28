@@ -41,7 +41,7 @@ class ButtonReader(threading.Thread):
             press_duration = time.time() - self.last_button_press_time
             self.last_button_press_time = None
             if press_duration >= 3:
-                return 2  # Long press
+                return 1 # Long press
             else:
                 return 1  # Short press
 

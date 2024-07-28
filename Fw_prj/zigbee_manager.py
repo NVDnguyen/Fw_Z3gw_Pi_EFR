@@ -10,10 +10,14 @@ from datetime import datetime
 from obj import Device
 from obj import Log
 from data_analyst import process_data
+import RPi.GPIO as GPIO
+
 # Global variables
 log_file = "/home/pi/documents/Python/Fw_prj/Logs/log_data.txt" 
 log_out = "/home/pi/documents/Python/Fw_prj/Logs/log_z3gw.txt"
 last_written_content = None
+
+
 
 def init_serial(port):
     global ser
@@ -33,22 +37,43 @@ def read_serial_data():
         return "", "Error"
     return "", "No Data"
 
-def create_zigbee_network(serial_port, queue, queue_fb,queue_log):
+def create_zigbee_network(serial_port, queue, queue_fb,queue_log,queue_sim):
     init_serial(serial_port)
-    execute_command(f"/home/pi/Z3gateway_2 -p {serial_port} -b 115200", queue, queue_fb,queue_log)
-      
+    execute_command(f"/home/pi/Z3gateway_2 -p {serial_port} -b 115200", queue, queue_fb,queue_log,queue_sim)
+
+def control_led(state):
+    GPIO.output(config.LED_PIN, GPIO.LOW)
+    if state == "ON":
+        GPIO.output(config.LED_PIN, GPIO.HIGH)
+        time.sleep(config.LED_ON_DURATION)
+        GPIO.output(config.LED_PIN, GPIO.LOW)
+    elif state == "BLINK":
+        end_time = time.time() + config.LED_BLINK_DURATION  # Blink for 5 seconds
+        while time.time() < end_time:
+            GPIO.output(config.LED_PIN, GPIO.HIGH)
+            time.sleep(0.2)
+            GPIO.output(config.LED_PIN, GPIO.LOW)
+            time.sleep(0.2)
+        GPIO.output(config.LED_PIN, GPIO.HIGH)  # Keep LED on after blinking
+        time.sleep(config.LED_ON_DURATION)  # Keep LED on for 250 seconds
+        GPIO.output(config.LED_PIN, GPIO.LOW)  # Turn off LED after 250 seconds
+    elif state == "OFF":
+        GPIO.output(config.LED_PIN, GPIO.LOW) 
+              
 def action_network(child, action,queue_log):
     cmds = []
     if action == 1:
         cmds = config.OPEN_NETWORK
         queue_log.put(Log(
-                "1",msg= config.OPEN_NETWORK_LOG
-            )) 
+                "ffff",msg= config.OPEN_NETWORK_LOG
+            ))        
+        control_led("ON") 
     elif action == 2:
         cmds = config.RESET_NETWORK
         queue_log.put(Log(
-                "1",msg= config.RESET_NETWORK_LOG
-            )) 
+                "ffff",msg= config.RESET_NETWORK_LOG
+            ))
+        control_led("BLINK") 
     elif action == 3:
         cmds = config.SEND_NODE_ACTION
     else:
@@ -65,7 +90,7 @@ def start_network(child):
         print(f"Executing custom command: {cmd}")
         child.sendline(cmd)
 
-def execute_command(cmd, queue, queue_fb,queue_log):
+def execute_command(cmd, queue, queue_fb,queue_log,queue_sim):
     try:
         print(f"Executing command: {cmd}")
         child = pexpect.spawn(cmd, encoding='utf-8')
@@ -100,7 +125,7 @@ def execute_command(cmd, queue, queue_fb,queue_log):
                         if device:
                             queue_fb.put(device) # data share firebase
                             try:
-                                process_data(child,device,queue_log) # generate log
+                                process_data(child,device,queue_log,queue_sim) # generate log
                             except Exception  as e:
                                 print(f"Error process data: {str(e)}")
                                                      
@@ -124,15 +149,16 @@ def extract_payload(output):
             source_node_id = payload_int_list[0]
             temperature = payload_int_list[1]
             humidity = payload_int_list[2]
-            ch4 = payload_int_list[3]
-            co = payload_int_list[4]             
-            fire = payload_int_list[5]
+            air = payload_int_list[3]
+            fire = payload_int_list[4]    
+            level = payload_int_list[5]         
             
-            print(f"Node ID: {source_node_id}, Temperature: {temperature}, Humidity: {humidity}, CH4: {ch4}, CO:{co} Fire: {fire}")            
             
-            write_to_file(log_file, f"Node ID: {source_node_id}, Temperature: {temperature}, Humidity: {humidity}, CH4: {ch4}, CO:{co} Fire: {fire}") 
+            print(f"Node ID: {source_node_id}, Temperature: {temperature}, Humidity: {humidity}, Air: {air}, Fire: {fire}, Level: {level}")            
             
-            return Device(id= source_node_id,fire=fire, hum=humidity, name=source_node_id, ch4=ch4,co=co, temp=temperature)
+            write_to_file(log_file, f"Node ID: {source_node_id}, Temperature: {temperature}, Humidity: {humidity}, Air: {air}, Fire: {fire}, Level: {level}") 
+            
+            return Device(id= source_node_id,fire=fire, hum=humidity, name=source_node_id, air=air, temp=temperature, level=level)
     return None
 
                   
@@ -161,9 +187,9 @@ def check_and_delete_old_logs(file_name, max_size_bytes):
     except Exception as e:
         print(f"Error checking and deleting old logs: {str(e)}")
 
-def main(queue,queue_fb,queue_log):
-    create_zigbee_network(config.SERIAL_PORT, queue, queue_fb,queue_log)
+def main(queue,queue_fb,queue_log,queue_sim):
+    create_zigbee_network(config.SERIAL_PORT, queue, queue_fb,queue_log,queue_sim)
     serial_log, network_status = read_serial_data()
     print("Network Status:", network_status)
-    execute_command(f"/home/pi/Z3gateway_2 -p {config.SERIAL_PORT} -b 115200", queue,queue_fb,queue_log)
+    execute_command(f"/home/pi/Z3gateway_2 -p {config.SERIAL_PORT} -b 115200", queue,queue_fb,queue_log,queue_sim)
 

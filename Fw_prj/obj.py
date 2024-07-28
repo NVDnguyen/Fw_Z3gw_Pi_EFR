@@ -1,12 +1,12 @@
 class Device:
-    def __init__(self, id, fire, hum, name, ch4, co, temp):
+    def __init__(self, id, fire, hum, name, air, temp,level):
         self.id = id
         self.name = name    
         self.fire = fire
         self.hum = hum      
-        self.ch4 = ch4  
-        self.co = co   
+        self.air =air  
         self.temp = temp
+        self.level = level
 
     def to_dict(self):
         return {
@@ -14,9 +14,9 @@ class Device:
             'name': self.name,
             'fire': self.fire,
             'hum': self.hum,            
-            'ch4': self.ch4, 
-            'co': self.co,  
-            'temp': self.temp
+            'air': self.air,              
+            'temp': self.temp,
+            'level':self.level
         }
 
 class Log:

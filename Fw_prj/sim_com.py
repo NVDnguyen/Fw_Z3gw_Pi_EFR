@@ -45,6 +45,7 @@ def send_sms(number, message):
             serial_conn.write((message + "\x1A").encode())  # CTRL+Z to send
             time.sleep(3)
             print("SMS sent to", number)
+            time.sleep(10) 
         else:
             print("Failed to send SMS")
     else:
@@ -54,6 +55,7 @@ def make_call(number):
     print("Making a call...")
     if send_at_command(f"ATD{number};"):
         print(f"Calling {number}...")
+        time.sleep(30) 
     else:
         print("Failed to make call")
 
@@ -65,9 +67,10 @@ if __name__ == "__main__":
         else:
             print("Failed to initialize SIM module.")
         
-        #send_sms("0363802865", "He thong canh bao")
+        #send_sms("0363802865","dmm")
+        # make_call("0387015635")
         make_call("0363802865")
-
+#0363802865
         serial_conn.close()
     else:
         print("Failed to initialize serial connection")

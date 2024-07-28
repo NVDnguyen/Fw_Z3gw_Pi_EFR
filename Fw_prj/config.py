@@ -30,3 +30,15 @@ RISK1_LOG = "Phát hiện bất thường"
 OPEN_NETWORK_LOG = "Hệ thống đang mở mạng"
 RESET_NETWORK_LOG = "Hệ thống thiết lập lại"
 ERROR_EXE_LOG = "Lỗi thiết lập mạng"
+HISTORY_DAYS_LIMIT = 1
+
+PHONES_FILE = '/home/pi/documents/Python/Fw_prj/Utility/phone_numbers.json'
+
+# LED control settings
+LED_PIN = 16
+LED_BLINK_DURATION = 5
+LED_ON_DURATION = 10
+
+LED_RED = 22
+LED_BLUE = 27
+LED_GREEN= 23
