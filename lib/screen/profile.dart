@@ -6,6 +6,7 @@ import 'package:iot_app/screen/profile_setting.dart';
 import 'package:iot_app/screen/wellcome.dart';
 import 'package:iot_app/provider/data_user.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -133,9 +134,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const Divider(),
                           _buildProfileOption(
-                            icon: Icons.share,
-                            text: "Share",
-                            onTap: () {},
+                            icon: Icons.contact_support_outlined,
+                            text: "About Us",
+                            onTap: () {
+                              launchUrl(Uri.parse(
+                                  "https://firebasestorage.googleapis.com/v0/b/fire-cloud-f2f21.appspot.com/o/Web%2Fweb_intructions.html?alt=media&token=da54b8cf-3022-4ea9-8a63-92bd99e05bd0"));
+                            },
                           ),
                           const Divider(),
                           _buildProfileOption(

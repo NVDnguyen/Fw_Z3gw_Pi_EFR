@@ -2,9 +2,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:iot_app/models/users.dart';
 
 class SharedPreferencesProvider {
-  static Future<String?> getValue(String key) async {
+  static Future<String> getValue(String key, {String defaultValue = ''}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    return prefs.getString(key) ?? defaultValue;
   }
 
   static Future<void> setValue(String key, String value) async {
@@ -74,5 +74,14 @@ class SharedPreferencesProvider {
       print(e.toString());
       return false;
     }
+  }
+
+  static Future<void> setTheme(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme', value);
+  }
+
+  static Future<String> getTheme() async {
+    return getValue('theme', defaultValue: '0');
   }
 }

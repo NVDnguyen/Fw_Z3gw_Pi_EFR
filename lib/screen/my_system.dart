@@ -47,6 +47,48 @@ class _MySystemScreenState extends State<MySystemScreen> {
     });
   }
 
+  void showGuestUsers(String systemID) async {
+    List<String> guests = await DataFirebase.getAllGuest(systemID);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Guests in System'),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: guests.length,
+              itemBuilder: (context, index) {
+                String guestID = guests[index];
+                return ListTile(
+                  title: Text(guestID),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () async {
+                      await DataFirebase.removeGuest(systemID, guestID);
+                      Navigator.of(context).pop();
+                      showGuestUsers(systemID); // Refresh the dialog
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,30 +130,44 @@ class _MySystemScreenState extends State<MySystemScreen> {
                                 : Icons.person_outline,
                             color: Colors.blueAccent),
                         title: Text(systemName,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blueAccent)),
                         subtitle: Text(
-                            'Role: $role\nAdmin: ${adminDetails['name']} (${adminDetails['email']})',
-                            style: TextStyle(color: Colors.blueGrey)),
-                        trailing: systemRoles[systemID] == 1
-                            ? null
-                            : IconButton(
-                                icon:
-                                    Icon(Icons.copy, color: Colors.blueAccent),
-                                onPressed: () {
-                                  if (emailToCopy != 'N/A') {
-                                    Clipboard.setData(
-                                        ClipboardData(text: emailToCopy));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: Text(
-                                          'Admin email copied to clipboard!'),
-                                      backgroundColor: Colors.blueAccent,
-                                    ));
-                                  }
-                                },
-                              ),
+                            'Role: $role\nAdmin: \n ${adminDetails['name']} \n ${adminDetails['email']}',
+                            style: const TextStyle(color: Colors.blueGrey)),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            systemRoles[systemID] == 1
+                                ? IconButton(
+                                    icon: Icon(Icons.info_outline,
+                                        color: Colors.blueAccent),
+                                    onPressed: () {
+                                      showGuestUsers(systemID);
+                                    },
+                                  )
+                                : Container(),
+                            systemRoles[systemID] != 1
+                                ? IconButton(
+                                    icon: Icon(Icons.copy,
+                                        color: Colors.blueAccent),
+                                    onPressed: () {
+                                      if (emailToCopy != 'N/A') {
+                                        Clipboard.setData(
+                                            ClipboardData(text: emailToCopy));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              'Admin email copied to clipboard!'),
+                                          backgroundColor: Colors.blueAccent,
+                                        ));
+                                      }
+                                    },
+                                  )
+                                : Container(),
+                          ],
+                        ),
                       ),
                     );
                   },

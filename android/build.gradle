@@ -1,7 +1,13 @@
-allprojects {
+buildscript {
+    ext.kotlin_version = '1.8.0'  // Update to match the required version
     repositories {
         google()
         mavenCentral()
+    }
+    dependencies {
+       classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:7.1.2'
+    // Other dependencies
     }
 }
 
@@ -13,6 +19,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-tasks.register("clean", Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

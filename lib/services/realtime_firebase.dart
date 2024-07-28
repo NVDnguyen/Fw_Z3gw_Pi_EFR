@@ -130,6 +130,28 @@ class DataFirebase {
     return controller.stream;
   }
 
+  static Future<List<String>> getSystemIds(String userId) async {
+    List<String> listID = [];
+    try {
+      DatabaseReference systemsRef = FirebaseDatabase.instance
+          .ref()
+          .child('users')
+          .child(userId)
+          .child("systems");
+      DataSnapshot snapshot = await systemsRef.get();
+      if (snapshot.exists) {
+        Map<dynamic, dynamic> systems = snapshot.value as Map<dynamic, dynamic>;
+        systems.forEach((key, value) {
+          listID.add(key);
+        });
+      }
+    } catch (e) {
+      print("Exception in get system IDs: ${e.toString()}");
+    }
+
+    return listID;
+  }
+
   // get name of a system
   static Future<String> getNameOfSystem(String idSystem) async {
     try {
@@ -158,11 +180,13 @@ class DataFirebase {
           .ref()
           .child('Systems')
           .child(idSystem)
+          .child("users")
           .child("admin");
 
       DataSnapshot adminSnapshot = await adminRef.get();
       if (adminSnapshot.exists) {
         String uid = adminSnapshot.value as String;
+        print(uid);
 
         // Fetch user details by uid
         DatabaseReference userRef =
@@ -229,6 +253,7 @@ class DataFirebase {
               .ref()
               .child('Systems')
               .child(idSystem)
+              .child("users")
               .child("admin");
           await r2.set(u.userID);
         } else {
@@ -238,9 +263,11 @@ class DataFirebase {
               .ref()
               .child('Systems')
               .child(idSystem)
-              .child("guests");
+              .child("users");
           await r2.child(u.userID).set("0");
         }
+        Users newUser = await DataFirebase.getUserRealTime(u);
+        SharedPreferencesProvider.setDataUser(newUser);
       }
 
       return true;
@@ -390,6 +417,25 @@ class DataFirebase {
     return controller.stream;
   }
 
+  // static Future<void> deleteLog(String timeStamp) {
+  //   final DateTime dateTime = DateTime.parse(timeStamp);
+  //   final String formattedDate =
+  //       DateFormat('yyyy-MM-dd – kk:mm:ss').format(dateTime);
+  //       try {
+  //     Users user = await SharedPreferencesProvider.getDataUser();
+  //     DatabaseReference deviceRef = FirebaseDatabase.instance
+  //         .ref()
+  //         .child('users')
+  //         .child(user.userID)
+  //         .child("systems")
+  //         .child(idSystem);
+  //     await deviceRef.remove();
+  //   } catch (e) {
+  //     print("Error remove system: ${e.toString()}");
+  //   }
+
+  // }
+
   // update name of device
   static Future<bool> setNameOfDevice(Device device, String data) async {
     try {
@@ -421,6 +467,52 @@ class DataFirebase {
     } catch (e) {
       print("Error upPhoneNumber: ${e.toString()}");
       return false;
+    }
+  }
+
+  // Function to get all non-admin UIDs within a system
+  static Future<List<String>> getAllGuest(String idSystem) async {
+    try {
+      // Fetch data from Realtime Database
+      DatabaseReference systemRef = FirebaseDatabase.instance
+          .ref()
+          .child('Systems')
+          .child(idSystem)
+          .child('users');
+      DataSnapshot snapshot = await systemRef.get();
+      Map<dynamic, dynamic>? usersData =
+          snapshot.value as Map<dynamic, dynamic>?;
+
+      if (usersData != null) {
+        List<String> nonAdminUIDs = [];
+
+        usersData.forEach((key, value) {
+          if (value == 0) {
+            // Checking if the user is not an admin
+            nonAdminUIDs.add(key);
+          }
+        });
+
+        return nonAdminUIDs;
+      }
+      return [];
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // delete guest from my system
+  static Future<void> removeGuest(String systemID, String userID) async {
+    try {
+      DatabaseReference userRef = FirebaseDatabase.instance
+          .ref()
+          .child('Systems')
+          .child(systemID)
+          .child('users')
+          .child(userID);
+      await userRef.remove();
+    } catch (e) {
+      throw e;
     }
   }
 }

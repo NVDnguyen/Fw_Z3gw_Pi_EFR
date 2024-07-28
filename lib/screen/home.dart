@@ -6,9 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/constants/properties.dart';
 import 'package:iot_app/models/devices.dart';
+import 'package:iot_app/screen/profile.dart';
 import 'package:iot_app/screen/wellcome.dart';
 import 'package:iot_app/services/realtime_firebase.dart';
 import 'package:iot_app/utils/qr_view.dart';
+import 'package:iot_app/widgets/Dashboard/chart_widget.dart';
 import 'package:iot_app/widgets/Dashboard/dashboard_widgets.dart';
 import 'package:iot_app/models/users.dart';
 import 'package:iot_app/provider/data_user.dart';
@@ -32,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isHome = true;
   late String helloSTR = "";
 
-  // Create List of SystemLog Objects
+  late String theme;
+  List<String> themes = ['0', '1', '2'];
 
-  List<Device> lDevice = [];
   List<Widget> wNoSystem = [];
   List<String> listIdSys = [];
 
@@ -58,14 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
       if (userNew != user) {
         user = userNew;
         SharedPreferencesProvider.setDataUser(user);
-      } //
+      }
 
       // buid dash board
       await buildSystemList();
+      // get theme
+      String loadTheme = await SharedPreferencesProvider.getTheme();
+
       setState(() {
         listIdSys = user.getSystemIDs();
         helloSTR = "Hi, ${user.username} !";
-
+        theme = loadTheme;
         isDataLoaded = true;
       });
     } catch (e) {
@@ -102,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
       );
       for (var result in results) {
-        lDevice = result[0];
+        List<Device> lDevice = result[0];
         String systemName = result[1];
         String idSystem = result[2];
 
@@ -116,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
               setState(() {
                 isHome = false;
                 selectedSystem = idSystem;
-                buildDeviceList();
+                buildDeviceList(lDevice);
               });
             },
             onLongPress: () {
@@ -140,11 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
         wSystems = wListSt;
         wNoSystem = [
           BuildHomeWidgets.buildInfoCard(
-              "Bạn chưa lắp đặt hệ thống thiết bị nào",
-              "Hãy lắp đặt các thiết bị an toàn, để bảo vệ bản thân, gia đình và mọi người xung quanh.",
-              "Hướng cài đặt và sử dụng thiết bị",
-              onTap: () =>
-                  _launchUrl(Uri.parse('https://firewisetech.tiiny.site/'))),
+              "You have no fire protection systems.",
+              "Ensure the safety of yourself, your family, and those around you by installing or adding a system.",
+              "Usage Instructions",
+              onTap: () => _launchUrl(Uri.parse(
+                  'https://firebasestorage.googleapis.com/v0/b/fire-cloud-f2f21.appspot.com/o/Web%2Fweb_intructions.html?alt=media&token=da54b8cf-3022-4ea9-8a63-92bd99e05bd0'))),
           const SizedBox(
             height: 20,
           ),
@@ -157,62 +162,174 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void buildDeviceList() {
+  void buildDeviceList(List<Device> lDevice) {
     List<Widget> deviceWidgets = [];
-    for (var device in lDevice) {
-      Widget deviceWidget =
-          BuildHomeWidgets.buildInfoSensor2(device, onPress: () {
-        final TextEditingController newNameDevice = TextEditingController();
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: newNameDevice,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "New name",
-                      prefixIcon: Icon(Icons.devices_other_outlined),
+    deviceWidgets.add(_boxTheme());
+    if (theme == "2") {
+      deviceWidgets.add(Chart.getLegendCard());
+      for (var device in lDevice) {
+        Widget deviceWidget = Chart.buildChartLineSensor(device, onPress: () {
+          final TextEditingController newNameDevice = TextEditingController();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: newNameDevice,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "New name",
+                        prefixIcon: Icon(Icons.devices_other_outlined),
+                      ),
                     ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _updateDeviceName(device, newNameDevice.text);
+                      setState(() {
+                        fetchUserData();
+                        buildSystemList();
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Next'),
                   ),
                 ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _updateDeviceName(device, newNameDevice.text);
-                    setState(() {
-                      fetchUserData();
-                      buildSystemList();
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Next'),
-                ),
-              ],
-            );
-          },
-        );
-      });
-      if (device.fire > FIRE_THRESHOLD) {
-        deviceWidgets.insert(0, deviceWidget);
-      } else {
-        deviceWidgets.add(deviceWidget);
+              );
+            },
+          );
+        });
+        if (device.fire > FIRE_THRESHOLD) {
+          deviceWidgets.insert(2, deviceWidget);
+        } else {
+          deviceWidgets.add(deviceWidget);
+        }
       }
+      setState(() {
+        wDevices = deviceWidgets;
+      });
+    } else if (theme == "1") {
+      for (var device in lDevice) {
+        Widget deviceWidget = Chart.buildChartSensor(device, onPress: () {
+          final TextEditingController newNameDevice = TextEditingController();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: newNameDevice,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "New name",
+                        prefixIcon: Icon(Icons.devices_other_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _updateDeviceName(device, newNameDevice.text);
+                      setState(() {
+                        fetchUserData();
+                        buildSystemList();
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Next'),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        if (device.fire > FIRE_THRESHOLD) {
+          deviceWidgets.insert(2, deviceWidget);
+        } else {
+          deviceWidgets.add(deviceWidget);
+        }
+      }
+      setState(() {
+        wDevices = deviceWidgets;
+      });
+    } else if (theme == "0") {
+      for (var device in lDevice) {
+        Widget deviceWidget =
+            BuildHomeWidgets.buildInfoSensor2(device, onPress: () {
+          final TextEditingController newNameDevice = TextEditingController();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: newNameDevice,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "New name",
+                        prefixIcon: Icon(Icons.devices_other_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _updateDeviceName(device, newNameDevice.text);
+                      setState(() {
+                        fetchUserData();
+                        buildSystemList();
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Next'),
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        if (device.fire > FIRE_THRESHOLD) {
+          deviceWidgets.insert(1, deviceWidget);
+        } else {
+          deviceWidgets.add(deviceWidget);
+        }
+      }
+      setState(() {
+        wDevices = deviceWidgets;
+      });
     }
-    setState(() {
-      wDevices = deviceWidgets;
-    });
   }
 
   @override
@@ -252,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 0,
               title: Text(
                 helloSTR,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -262,10 +379,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: InkWell(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const ProfileScreen()),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileScreen()),
+                      );
                     },
                     child:
                         CircleAvatar(backgroundImage: NetworkImage(user.image)),
@@ -302,6 +419,31 @@ class _HomeScreenState extends State<HomeScreen> {
         : const Center(
             child:
                 CircularProgressIndicator(backgroundColor: Color(0xFFF7F8FA)));
+  }
+
+  Widget _boxTheme() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: DropdownButton<String>(
+          value: theme,
+          items: themes.map((String theme) {
+            return DropdownMenuItem<String>(
+              value: theme,
+              child: Text(theme),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            setState(() {
+              theme = newValue!;
+              SharedPreferencesProvider.setTheme(theme);
+              _refreshScreen();
+            });
+          },
+        ),
+      ),
+    );
   }
 
   Future<void> _refreshScreen() async {
@@ -776,35 +918,44 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _shareSystemQR(BuildContext context, String idSystem) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('QR Code for System: $idSystem'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                width: 200.0,
-                height: 200.0,
-                child: QrImageView(
-                  data: idSystem,
-                  version: QrVersions.auto,
-                  size: 200.0,
+    user.isAdmin(idSystem)
+        ? showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('QR Code for System: $idSystem'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 200.0,
+                      height: 200.0,
+                      child: QrImageView(
+                        data: idSystem,
+                        version: QrVersions.auto,
+                        size: 200.0,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          )
+        : showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                title: Text('You do not have permission !'),
+              );
+            },
+          );
   }
 }

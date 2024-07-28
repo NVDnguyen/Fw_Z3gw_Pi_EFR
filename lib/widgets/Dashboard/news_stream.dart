@@ -202,7 +202,7 @@ Widget buildInfoNumsLogs({required List<String> idSystem, required int num}) {
       }
 
       final data = snapshot.data!;
-      // Limit display to first 5 logs
+      // Limit display to first num logs
       final displayData = data.take(num).toList();
 
       return Container(

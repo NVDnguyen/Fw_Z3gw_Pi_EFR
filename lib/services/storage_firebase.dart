@@ -10,7 +10,7 @@ class FirebaseStorageService {
     try {
       String fileName = Path.basename(file.path);
       // Create a reference to the location you want to upload to in Firebase Storage
-      Reference ref = storage.ref().child('$userId/$fileName');
+      Reference ref = storage.ref().child('User/$userId/$fileName');
 
       // Upload the file to Firebase Storage
       UploadTask uploadTask = ref.putFile(file);
@@ -29,7 +29,7 @@ class FirebaseStorageService {
   static Future<String> getFile(String userId, String fileName) async {
     try {
       // Create a reference by path
-      Reference ref = storage.ref().child('$userId/$fileName');
+      Reference ref = storage.ref().child('User/$userId/$fileName');
 
       // Get the file URL
       final url = await ref.getDownloadURL();
@@ -44,7 +44,7 @@ class FirebaseStorageService {
   static Future<void> deleteFile(String url) async {
     try {
       // Create a reference to the file to delete
-      Reference ref = storage.ref().child('$url');
+      Reference ref = storage.ref().child('User/$url');
 
       // Delete the file
       await ref.delete();

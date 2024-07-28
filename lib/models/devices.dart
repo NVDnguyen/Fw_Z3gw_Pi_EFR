@@ -5,9 +5,8 @@ class Device {
   final String name;
   final double fire;
   final double hum;
-  final double smoke;
+  final double air; 
   final double temp;
-  final double alarm;
   final String systemID;
 
   Device({
@@ -15,11 +14,11 @@ class Device {
     required this.name,
     required this.fire,
     required this.hum,
-    required this.smoke,
-    required this.temp,
-    required this.alarm,
+    required this.air, // Changed from smoke to gas
+    required this.temp,// Changed from alarm to co
     required this.systemID,
   });
+
   factory Device.fromJson(
       String systemID, String id, Map<dynamic, dynamic> json) {
     return Device(
@@ -27,14 +26,14 @@ class Device {
       name: json['name'] as String? ?? '',
       fire: (json['fire'] as num?)?.toDouble() ?? 0.0,
       hum: (json['hum'] as num?)?.toDouble() ?? 0.0,
-      smoke: (json['smoke'] as num?)?.toDouble() ?? 0.0,
+      air: (json['air'] as num?)?.toDouble() ?? 0.0, 
       temp: (json['temp'] as num?)?.toDouble() ?? 0.0,
-      alarm: (json['alarm'] as num?)?.toDouble() ?? 0.0,
       systemID: systemID,
     );
   }
+
   @override
   String toString() {
-    return 'Device { id: $id, name: $name, fire: $fire, hum: $hum, smoke: $smoke, temp: $temp, systemID: $systemID }';
+    return 'Device { id: $id, name: $name, fire: $fire, hum: $hum, air: $air, temp: $temp, systemID: $systemID }';
   }
 }
